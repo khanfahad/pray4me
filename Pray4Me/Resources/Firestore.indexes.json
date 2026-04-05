@@ -1,0 +1,29 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "duaRequests",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "isActive", "order": "ASCENDING" },
+        { "fieldPath": "duasMadeCount", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "duaRequests",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "requesterId", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "duaMadeRecords",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "duaRequestId", "order": "ASCENDING" },
+        { "fieldPath": "madeAt", "order": "DESCENDING" }
+      ]
+    }
+  ]
+}

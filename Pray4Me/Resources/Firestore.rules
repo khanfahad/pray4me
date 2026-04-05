@@ -1,0 +1,47 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Users collection
+    match /users/{userId} {
+      // Users can read their own profile
+      allow read: if request.auth != null && request.auth.uid == userId;
+      // Users can create/update their own profile
+      allow create, update: if request.auth != null && request.auth.uid == userId;
+      // No one can delete user profiles
+      allow delete: if false;
+    }
+
+    // Dua Requests collection
+    match /duaRequests/{requestId} {
+      // Any authenticated user can read active requests
+      allow read: if request.auth != null;
+      // Any authenticated user can create a request
+      allow create: if request.auth != null
+                    && request.resource.data.requesterId == request.auth.uid;
+      // Only the requester can deactivate their request
+      // Any authenticated user can increment duasMadeCount
+      allow update: if request.auth != null
+                    && (
+                      // Requester can deactivate
+                      (request.auth.uid == resource.data.requesterId)
+                      ||
+                      // Anyone can update dua count fields
+                      (request.resource.data.diff(resource.data).affectedKeys()
+                        .hasOnly(['duasMadeCount', 'lastDuaMadeAt']))
+                    );
+      allow delete: if false;
+    }
+
+    // Dua Made Records collection
+    match /duaMadeRecords/{recordId} {
+      // Any authenticated user can read
+      allow read: if request.auth != null;
+      // Any authenticated user can create a record
+      allow create: if request.auth != null
+                    && request.resource.data.makerId == request.auth.uid;
+      // No updates or deletes
+      allow update, delete: if false;
+    }
+  }
+}
