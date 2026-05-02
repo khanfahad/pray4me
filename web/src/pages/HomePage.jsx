@@ -1,13 +1,32 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { FirebaseService } from '../services/firebase';
-import { getCategoryById, HOLY_SITES } from '../services/data';
+import { DUA_CATEGORIES, HOLY_SITES } from '../services/data';
 import DuaCard from '../components/DuaCard';
+
+const SORT_OPTIONS = [
+  { id: 'shuffle', label: 'Shuffle', icon: '🔀' },
+  { id: 'fewest', label: 'Fewest Duas', icon: '↑' },
+  { id: 'most', label: 'Most Duas', icon: '↓' },
+  { id: 'newest', label: 'Newest', icon: '✦' },
+];
+
+function shuffleArray(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
 
 export default function HomePage({ locationState }) {
   const { user } = useAuth();
   const [requests, setRequests] = useState([]);
   const [myRequests, setMyRequests] = useState([]);
+  const [sortMode, setSortMode] = useState('newest');
+  const [activeCategory, setActiveCategory] = useState('all');
+  const [shuffled, setShuffled] = useState([]);
 
   useEffect(() => {
     const unsub1 = FirebaseService.listenToActiveRequests(setRequests);
@@ -15,93 +34,150 @@ export default function HomePage({ locationState }) {
     return () => { unsub1?.(); unsub2?.(); };
   }, [user]);
 
-  const firstName = user?.displayName?.split(' ')[0] || 'Muslim';
+  useEffect(() => {
+    if (sortMode === 'shuffle') {
+      setShuffled(shuffleArray(requests));
+    }
+  }, [sortMode, requests]);
+
+  const filtered = useMemo(() => {
+    let list = activeCategory === 'all' ? requests : requests.filter(r => r.category === activeCategory);
+    if (sortMode === 'fewest') return [...list].sort((a, b) => a.duasMadeCount - b.duasMadeCount);
+    if (sortMode === 'most') return [...list].sort((a, b) => b.duasMadeCount - a.duasMadeCount);
+    if (sortMode === 'newest') return [...list].sort((a, b) => b.createdAt - a.createdAt);
+    if (sortMode === 'shuffle') {
+      return activeCategory === 'all' ? shuffled : shuffled.filter(r => r.category === activeCategory);
+    }
+    return list;
+  }, [requests, sortMode, activeCategory, shuffled]);
+
+  const firstName = user?.displayName?.split(' ')[0] || 'Friend';
   const hour = new Date().getHours();
   const greeting = hour < 12 ? 'Good Morning' : hour < 17 ? 'Good Afternoon' : 'Good Evening';
+
+  const usedCategoryIds = [...new Set(requests.map(r => r.category))];
+  const usedCategories = DUA_CATEGORIES.filter(c => usedCategoryIds.includes(c.id));
 
   return (
     <div className="page-content">
       <div className="islamic-header">
-        <div className="icon">🌙</div>
-        <h1>Pray4Me</h1>
-        <p className="subtitle">As-salamu alaykum, {firstName}</p>
+        <div className="header-content">
+          <div className="icon">🌙</div>
+          <h1>Pray4Me</h1>
+          <p className="subtitle">{greeting}, {firstName} — As-salamu alaykum</p>
+        </div>
       </div>
+      <div className="header-accent" />
 
-      <div className="container" style={{ marginTop: 16 }}>
-        {/* Location Status */}
+      <div className="container" style={{ marginTop: 20 }}>
         {locationState.isAtHolySite && locationState.currentSite ? (
-          <div className="card fade-in" style={{ marginBottom: 16 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-              <span style={{ fontSize: '1.5rem' }}>📍</span>
-              <div>
-                <div className="subheading" style={{ color: 'var(--green-primary)', fontSize: '0.95rem' }}>
-                  You are at {locationState.currentSite.name}
-                </div>
-                <div className="caption">Dua requests are available. May Allah accept your prayers.</div>
-              </div>
+          <div className="info-banner green fade-in" style={{ marginBottom: 16 }}>
+            <span className="banner-icon">📍</span>
+            <div className="banner-text">
+              <div className="banner-title">You are at {locationState.currentSite.name}</div>
+              Dua requests are available. May Allah accept your prayers.
             </div>
           </div>
         ) : (
-          <div className="card" style={{ marginBottom: 16 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-              <span style={{ fontSize: '1.5rem', opacity: 0.5 }}>📍</span>
-              <div>
-                <div className="subheading" style={{ fontSize: '0.95rem' }}>Not at a holy site</div>
-                <div className="caption">You can still request duas. Making dua is available at holy sites.</div>
-              </div>
+          <div className="info-banner gray" style={{ marginBottom: 16 }}>
+            <span className="banner-icon" style={{ opacity: 0.5 }}>📍</span>
+            <div className="banner-text">
+              <div className="banner-title">Not at a holy site</div>
+              You can still request duas. Making dua for others is available at holy sites.
             </div>
           </div>
         )}
 
-        {/* Debug location simulator */}
         <div className="debug-bar">
-          <div className="debug-title">DEBUG: Simulate Location</div>
+          <div className="debug-title">Debug — Simulate Location</div>
           <div className="debug-buttons">
             {HOLY_SITES.map(site => (
               <button key={site.id} className="debug-btn" onClick={() => locationState.simulateSite(site)}>
                 {site.name}
               </button>
             ))}
-            <button className="debug-btn clear" onClick={locationState.clearSimulation}>Clear</button>
+            <button className="debug-btn clear" onClick={locationState.clearSimulation}>✕ Clear</button>
           </div>
         </div>
 
-        {/* Stats */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12, margin: '16px 0' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 10, margin: '20px 0' }}>
           <div className="card stat-card">
             <div className="stat-icon">📋</div>
             <div className="stat-value">{requests.length}</div>
-            <div className="stat-label">Active Requests</div>
+            <div className="stat-label">Requests</div>
           </div>
           <div className="card stat-card">
-            <div className="stat-icon">💛</div>
+            <div className="stat-icon">🤲</div>
             <div className="stat-value">{user?.duasMadeCount || 0}</div>
-            <div className="stat-label">Duas You Made</div>
+            <div className="stat-label">Duas Made</div>
           </div>
           <div className="card stat-card">
             <div className="stat-icon">💬</div>
             <div className="stat-value">{myRequests.filter(r => r.isActive).length}</div>
-            <div className="stat-label">Your Requests</div>
+            <div className="stat-label">My Requests</div>
           </div>
         </div>
 
-        {/* Divider */}
         <div className="islamic-divider">
-          <div className="line"></div>
-          <div className="diamond">◆</div>
-          <div className="line"></div>
+          <div className="line"></div><div className="diamond">◆</div><div className="line"></div>
         </div>
 
-        {/* Recent Requests */}
-        <h2 className="subheading" style={{ fontSize: '1.1rem', margin: '16px 0 12px' }}>Recent Dua Requests</h2>
+        <div className="section-header">
+          <span className="section-title">Dua Requests</span>
+          <span className="caption">{filtered.length} showing</span>
+        </div>
+      </div>
 
-        {requests.length === 0 ? (
+      {/* Sort bar */}
+      <div className="sort-bar">
+        <span className="sort-label">Sort</span>
+        {SORT_OPTIONS.map(opt => (
+          <button
+            key={opt.id}
+            className={`sort-btn ${sortMode === opt.id ? 'active' : ''}`}
+            onClick={() => {
+              setSortMode(opt.id);
+              if (opt.id === 'shuffle') setShuffled(shuffleArray(requests));
+            }}
+          >
+            <span>{opt.icon}</span> {opt.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Category chips */}
+      {usedCategories.length > 1 && (
+        <div className="category-chips">
+          <button
+            className={`category-chip ${activeCategory === 'all' ? 'active' : ''}`}
+            onClick={() => setActiveCategory('all')}
+          >
+            🌍 All
+          </button>
+          {usedCategories.map(cat => (
+            <button
+              key={cat.id}
+              className={`category-chip ${activeCategory === cat.id ? 'active' : ''}`}
+              onClick={() => setActiveCategory(activeCategory === cat.id ? 'all' : cat.id)}
+            >
+              <span className="chip-icon">{cat.icon}</span> {cat.name}
+            </button>
+          ))}
+        </div>
+      )}
+
+      <div className="container">
+        {filtered.length === 0 ? (
           <div className="empty-state">
-            <div className="empty-icon">💬</div>
-            <p>No dua requests yet.<br/>Be the first to request a dua!</p>
+            <div className="empty-icon">🤲</div>
+            <p>
+              {activeCategory !== 'all'
+                ? 'No requests in this category yet.'
+                : 'No dua requests yet.\nBe the first to request a dua!'}
+            </p>
           </div>
         ) : (
-          requests.slice(0, 5).map(req => (
+          filtered.slice(0, 10).map(req => (
             <DuaCard
               key={req.id}
               request={req}

@@ -49,7 +49,7 @@ export default function RequestDuaPage() {
       };
       await FirebaseService.createDuaRequest(request);
       await refreshUser();
-      toast.success('Your dua request has been submitted. May Allah answer it.', { duration: 4000 });
+      toast.success('Your dua request has been submitted. May Allah answer it.', { duration: 4000, icon: '🤲' });
       resetForm();
     } catch (err) {
       toast.error('Failed to submit. Please try again.');
@@ -60,18 +60,23 @@ export default function RequestDuaPage() {
   return (
     <div className="page-content">
       <div className="islamic-header">
-        <div className="icon">🤲</div>
-        <h1>Request a Dua</h1>
-        <p className="subtitle">Ask the Ummah to pray for you</p>
+        <div className="header-content">
+          <div className="icon">🤲</div>
+          <h1>Request a Dua</h1>
+          <p className="subtitle">Ask the Ummah to pray for you</p>
+        </div>
       </div>
+      <div className="header-accent" />
 
-      <div className="container" style={{ marginTop: 16 }}>
+      <div className="container" style={{ marginTop: 20 }}>
         {!selectedCategory ? (
-          /* Category Picker */
           <>
-            <h2 className="subheading" style={{ fontSize: '1rem', marginBottom: 16 }}>
-              What would you like dua for?
-            </h2>
+            <div style={{ marginBottom: 20 }}>
+              <h2 className="subheading" style={{ fontSize: '1rem', color: 'var(--charcoal)', marginBottom: 4 }}>
+                What would you like dua for?
+              </h2>
+              <p className="caption">Choose a category to get started</p>
+            </div>
             <div className="category-grid">
               {DUA_CATEGORIES.map(cat => (
                 <button key={cat.id} className="category-card" onClick={() => setSelectedCategory(cat)}>
@@ -82,60 +87,52 @@ export default function RequestDuaPage() {
             </div>
           </>
         ) : (
-          /* Request Form */
           <div className="fade-in">
             <button
-              className="btn btn-sm btn-secondary"
+              className="btn btn-secondary btn-sm"
               onClick={resetForm}
-              style={{ width: 'auto', marginBottom: 16 }}
+              style={{ marginBottom: 20 }}
             >
-              ← Back
+              ← Back to Categories
             </button>
 
-            {/* Selected category */}
-            <div className="card" style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
-              <span style={{ fontSize: '1.3rem' }}>{selectedCategory.icon}</span>
-              <span className="subheading" style={{ color: 'var(--charcoal)', fontSize: '1rem' }}>
-                {selectedCategory.name}
-              </span>
+            <div className="card" style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 18 }}>
+              <span style={{ fontSize: '1.6rem', lineHeight: 1 }}>{selectedCategory.icon}</span>
+              <div>
+                <div className="subheading" style={{ color: 'var(--charcoal)', fontSize: '1rem' }}>
+                  {selectedCategory.name}
+                </div>
+                {selectedCategory.defaultText && selectedCategory.id !== 'custom' && (
+                  <p className="caption" style={{ marginTop: 2, fontStyle: 'italic' }}>"{selectedCategory.defaultText}"</p>
+                )}
+              </div>
             </div>
 
-            {/* Default text */}
-            {selectedCategory.id !== 'custom' && !selectedSuggested && selectedCategory.defaultText && (
-              <div className="card" style={{ marginBottom: 16 }}>
-                <div className="caption" style={{ marginBottom: 4 }}>Default request:</div>
-                <p style={{ fontSize: '0.9rem', fontStyle: 'italic', color: 'var(--charcoal)' }}>
-                  {selectedCategory.defaultText}
-                </p>
-              </div>
-            )}
-
-            {/* Suggested Duas */}
             {selectedCategory.suggestedDuas.length > 0 && (
-              <div className="card" style={{ marginBottom: 16 }}>
+              <div className="card" style={{ marginBottom: 18 }}>
                 <button
                   onClick={() => setShowSuggested(!showSuggested)}
                   style={{
                     background: 'none', border: 'none', cursor: 'pointer', width: '100%',
-                    display: 'flex', alignItems: 'center', gap: 8, padding: 0,
-                    color: 'var(--green-primary)', fontSize: '0.9rem'
+                    display: 'flex', alignItems: 'center', gap: 10, padding: 0,
+                    color: 'var(--green-primary)', fontSize: '0.88rem', fontWeight: 600,
                   }}
                 >
-                  <span>💡</span>
-                  <span>Suggest a Dua from Quran/Sunnah</span>
-                  <span style={{ marginLeft: 'auto' }}>{showSuggested ? '▲' : '▼'}</span>
+                  <span style={{ fontSize: '1rem' }}>💡</span>
+                  <span>Use a Dua from Quran & Sunnah</span>
+                  <span style={{ marginLeft: 'auto', fontSize: '0.8rem', opacity: 0.7 }}>{showSuggested ? '▲' : '▼'}</span>
                 </button>
 
                 {showSuggested && (
-                  <div style={{ marginTop: 12 }}>
+                  <div style={{ marginTop: 14 }}>
                     {selectedCategory.suggestedDuas.map((dua, i) => (
                       <div
                         key={i}
                         className={`suggested-dua ${selectedSuggested === dua ? 'selected' : ''}`}
                         onClick={() => setSelectedSuggested(selectedSuggested === dua ? null : dua)}
                       >
-                        <p className="arabic-text">{dua.arabic}</p>
-                        <p style={{ fontSize: '0.85rem', margin: '8px 0', color: 'var(--charcoal)' }}>
+                        <p className="arabic-text" style={{ fontSize: '1.1rem', marginBottom: 8 }}>{dua.arabic}</p>
+                        <p style={{ fontSize: '0.84rem', margin: '6px 0', color: 'var(--charcoal-light)', fontStyle: 'italic', lineHeight: 1.6 }}>
                           {dua.translation}
                         </p>
                         <p className="source">— {dua.source}</p>
@@ -146,21 +143,20 @@ export default function RequestDuaPage() {
               </div>
             )}
 
-            {/* Custom text */}
             {(selectedCategory.id === 'custom' || !selectedSuggested) && (
-              <div style={{ marginBottom: 16 }}>
-                <label style={{ fontSize: '0.9rem', fontWeight: 500, display: 'block', marginBottom: 6 }}>
-                  {selectedCategory.id === 'custom' ? 'Write your dua request' : 'Or add a specific note (optional)'}
+              <div style={{ marginBottom: 18 }}>
+                <label style={{ fontSize: '0.88rem', fontWeight: 600, display: 'block', marginBottom: 8, color: 'var(--charcoal)' }}>
+                  {selectedCategory.id === 'custom' ? 'Write your dua request' : 'Add a personal note (optional)'}
                 </label>
                 <textarea
                   value={customText}
                   onChange={(e) => setCustomText(e.target.value)}
-                  placeholder="Keep it brief — one minute to read..."
-                  rows={3}
+                  placeholder="Keep it brief — those making dua should be able to read it in under a minute..."
+                  rows={4}
                   maxLength={MAX_CUSTOM_LENGTH + 10}
                 />
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 4 }}>
-                  <span className="caption">Keep it brief — one minute to read</span>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 6 }}>
+                  <span className="caption">Keep it concise and sincere</span>
                   <span className="caption" style={{ color: customText.length > MAX_CUSTOM_LENGTH ? 'var(--red)' : undefined }}>
                     {customText.length}/{MAX_CUSTOM_LENGTH}
                   </span>
@@ -168,15 +164,11 @@ export default function RequestDuaPage() {
               </div>
             )}
 
-            {/* Divider */}
-            <div className="islamic-divider" style={{ margin: '16px 0' }}>
-              <div className="line"></div>
-              <div className="diamond">◆</div>
-              <div className="line"></div>
+            <div className="islamic-divider" style={{ margin: '20px 0' }}>
+              <div className="line"></div><div className="diamond">◆</div><div className="line"></div>
             </div>
 
-            {/* Anonymous Toggle */}
-            <div style={{ marginBottom: 20 }}>
+            <div style={{ marginBottom: 22 }}>
               <div className="toggle-wrapper">
                 <button
                   className={`toggle ${isAnonymous ? 'active' : ''}`}
@@ -184,26 +176,29 @@ export default function RequestDuaPage() {
                   aria-label="Toggle anonymous"
                 />
                 <div>
-                  <div style={{ fontSize: '0.9rem', fontWeight: 500 }}>Stay Anonymous</div>
+                  <div style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--charcoal)' }}>Stay Anonymous</div>
                   <div className="caption">Your name will be hidden from those making dua</div>
                 </div>
               </div>
               {!isAnonymous && (
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 8, color: 'var(--green-primary)', fontSize: '0.8rem' }}>
-                  <span>✓</span>
-                  <span>Sharing your name lets others make a more personal dua for you</span>
+                <div className="info-banner green" style={{ marginTop: 10 }}>
+                  <span className="banner-icon">✓</span>
+                  <span className="banner-text">Sharing your name allows others to make a more personal dua for you</span>
                 </div>
               )}
             </div>
 
-            {/* Submit */}
             <button
               className="btn btn-primary"
               disabled={!isValid() || submitting}
               onClick={handleSubmit}
             >
-              {submitting ? 'Submitting...' : 'Submit Dua Request'}
+              {submitting ? 'Submitting...' : '🤲  Submit Dua Request'}
             </button>
+
+            <p className="caption text-center" style={{ marginTop: 12 }}>
+              Your request will be visible to Muslims at holy sites
+            </p>
           </div>
         )}
       </div>

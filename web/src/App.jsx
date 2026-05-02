@@ -17,11 +17,12 @@ function App() {
       <div style={{
         minHeight: '100vh', display: 'flex', flexDirection: 'column',
         alignItems: 'center', justifyContent: 'center',
-        background: 'var(--green-dark)', color: 'white'
+        background: 'linear-gradient(150deg, var(--green-dark), var(--green-primary))',
+        color: 'white',
       }}>
-        <div style={{ fontSize: '3rem', marginBottom: 16 }}>🌙</div>
-        <div style={{ fontFamily: 'var(--font-serif)', fontSize: '1.8rem', fontWeight: 700 }}>Pray4Me</div>
-        <div style={{ marginTop: 16, opacity: 0.7 }}>Loading...</div>
+        <div style={{ fontSize: '3.5rem', marginBottom: 16, filter: 'drop-shadow(0 4px 12px rgba(200,169,81,0.5))' }}>🌙</div>
+        <div style={{ fontFamily: 'var(--font-serif)', fontSize: '2rem', fontWeight: 700, marginBottom: 8 }}>Pray4Me</div>
+        <div style={{ opacity: 0.65, fontSize: '0.88rem' }}>Loading...</div>
       </div>
     );
   }
@@ -31,17 +32,17 @@ function App() {
   }
 
   const tabs = [
-    { id: 'home', label: 'Home', icon: '🏠' },
-    { id: 'request', label: 'Request Dua', icon: '➕' },
-    { id: 'make', label: 'Make Dua', icon: '🤲' },
-    { id: 'profile', label: 'Profile', icon: '👤' },
+    { id: 'home',    label: 'Home',    icon: '🏠' },
+    { id: 'request', label: 'Request', icon: '➕' },
+    { id: 'make',    label: 'Make Dua', icon: '🤲' },
+    { id: 'profile', label: 'Profile',  icon: '👤' },
   ];
 
   return (
     <>
-      {activeTab === 'home' && <HomePage locationState={locationState} />}
+      {activeTab === 'home'    && <HomePage locationState={locationState} />}
       {activeTab === 'request' && <RequestDuaPage />}
-      {activeTab === 'make' && <MakeDuaPage locationState={locationState} />}
+      {activeTab === 'make'    && <MakeDuaPage locationState={locationState} />}
       {activeTab === 'profile' && <ProfilePage />}
 
       <nav className="tab-bar">
@@ -52,7 +53,7 @@ function App() {
             onClick={() => setActiveTab(tab.id)}
           >
             <span className="tab-icon">{tab.icon}</span>
-            <span>{tab.label}</span>
+            <span className="tab-label">{tab.label}</span>
           </button>
         ))}
       </nav>
