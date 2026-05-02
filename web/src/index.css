@@ -304,6 +304,11 @@ textarea:focus, input:focus {
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   width: 52px; height: 52px; border-radius: 50%; flex-shrink: 0; margin-left: 12px;
   background: var(--green-lighter); border: 2px solid var(--green-light);
+  padding: 0; font-family: inherit; transition: background 0.2s, border-color 0.2s, width 0.15s, height 0.15s;
+}
+.dua-card-count-bubble.expanded {
+  background: var(--green-primary); border-color: var(--green-primary);
+  width: 60px; height: 60px;
 }
 .dua-card-count-bubble .count-num {
   font-family: var(--font-serif); font-size: 1.1rem; font-weight: 700; color: var(--green-primary); line-height: 1;
@@ -496,6 +501,73 @@ textarea:focus, input:focus {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
 }
+
+/* ── Holy-only badge on DuaCard ─────────────── */
+.holy-only-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 0.72rem; font-weight: 600; letter-spacing: 0.02em;
+  background: linear-gradient(135deg, #1B5E20, #2E7D32);
+  color: white; padding: 3px 10px; border-radius: 20px;
+  margin-bottom: 10px;
+}
+
+/* ── Count bubble — expanded breakdown ─────── */
+.count-breakdown {
+  display: flex; flex-direction: column; align-items: center; width: 100%; gap: 3px;
+}
+.count-breakdown-row {
+  display: flex; align-items: center; gap: 3px;
+}
+.count-breakdown-icon { font-size: 0.75rem; line-height: 1; }
+.count-breakdown-num {
+  font-family: var(--font-serif); font-size: 0.85rem; font-weight: 700;
+  color: white; line-height: 1;
+}
+.count-breakdown-divider {
+  width: 28px; height: 1px; background: rgba(255,255,255,0.3); margin: 1px 0;
+}
+
+/* Hint text below expanded bubble */
+.count-breakdown-hint {
+  font-size: 0.75rem; color: var(--soft-gray);
+  display: flex; align-items: center; gap: 6px;
+  margin-bottom: 8px; margin-top: -4px;
+}
+.count-breakdown-sep { opacity: 0.4; }
+
+/* ── "Make dua from anywhere" button ─────── */
+.btn-make-anywhere {
+  width: 100%; padding: 13px 18px; border-radius: var(--radius-sm);
+  border: 2px solid var(--gold); background: var(--gold-lighter);
+  color: var(--gold-dark); font-weight: 700; font-size: 0.9rem;
+  cursor: pointer; transition: background 0.18s, transform 0.15s;
+  font-family: inherit; letter-spacing: 0.01em;
+}
+.btn-make-anywhere:hover { background: rgba(200,169,81,0.2); transform: translateY(-1px); }
+.btn-make-anywhere:active { transform: translateY(0); }
+.btn-make-anywhere:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+/* ── Scope selector on RequestDuaPage ───── */
+.dua-scope-option {
+  display: flex; align-items: center; gap: 12px;
+  width: 100%; padding: 14px 14px; border-radius: var(--radius-sm);
+  border: 2px solid var(--border); background: var(--warm-white);
+  cursor: pointer; text-align: left; transition: border-color 0.18s, background 0.18s;
+  font-family: inherit;
+}
+.dua-scope-option:hover { border-color: var(--green-light); background: var(--green-lighter); }
+.dua-scope-option.selected {
+  border-color: var(--green-primary); background: var(--green-lighter);
+}
+.scope-icon { font-size: 1.5rem; flex-shrink: 0; }
+.scope-text { flex: 1; min-width: 0; }
+.scope-title { font-weight: 700; font-size: 0.9rem; color: var(--charcoal); line-height: 1.2; }
+.scope-desc { font-size: 0.78rem; color: var(--soft-gray); margin-top: 2px; line-height: 1.35; }
+.scope-check {
+  flex-shrink: 0; font-size: 1rem; color: var(--green-primary);
+  font-weight: 700; opacity: 0; transition: opacity 0.15s;
+}
+.scope-check.visible { opacity: 1; }
 
 /* Mobile responsive */
 @media (max-width: 480px) {

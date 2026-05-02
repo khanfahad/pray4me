@@ -5,8 +5,6 @@ import {
   updateDoc, query, where, orderBy, limit, onSnapshot, increment, serverTimestamp
 } from 'firebase/firestore';
 
-// Firebase config — replace with your actual config from Firebase Console
-// For testing, we'll use a demo mode that works with local state
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "demo-key",
   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "demo.firebaseapp.com",
@@ -34,33 +32,85 @@ try {
 export { auth, db, isDemoMode };
 
 // ============================================================
-// DEMO MODE — local storage fallback for testing without Firebase
+// DEMO MODE — local storage fallback
 // ============================================================
 
 const DEMO_STORAGE_KEY = 'pray4me_demo_data';
+const DEMO_VERSION = 3; // bump to clear old cached data
 
 function getDemoData() {
   const raw = localStorage.getItem(DEMO_STORAGE_KEY);
-  if (raw) return JSON.parse(raw);
-  return { users: {}, duaRequests: [], duaMadeRecords: [] };
+  if (raw) {
+    const parsed = JSON.parse(raw);
+    if (parsed.__version === DEMO_VERSION) return parsed;
+    // Version mismatch — clear stale data but preserve users
+    const freshUsers = parsed.users || {};
+    return { __version: DEMO_VERSION, users: freshUsers, duaRequests: [], duaMadeRecords: [] };
+  }
+  return { __version: DEMO_VERSION, users: {}, duaRequests: [], duaMadeRecords: [] };
 }
 
 function saveDemoData(data) {
-  localStorage.setItem(DEMO_STORAGE_KEY, JSON.stringify(data));
+  localStorage.setItem(DEMO_STORAGE_KEY, JSON.stringify({ ...data, __version: DEMO_VERSION }));
 }
 
 // Pre-seed some dua requests for demo
+// holyOnly: true  → only people at holy sites can make dua
+// holyOnly: false → anyone can make dua (default)
+// holyDuasCount   → subset of duasMadeCount made specifically at holy sites
 function seedDemoData(userId) {
   const data = getDemoData();
   if (data.duaRequests.length > 0) return;
 
   const seeds = [
-    { id: 'seed1', requesterId: 'other1', requesterName: 'Ahmed', isAnonymous: false, category: 'health_and_healing', customText: null, suggestedDua: null, duasMadeCount: 3, lastDuaMadeAt: null, createdAt: Date.now() - 86400000, isActive: true },
-    { id: 'seed2', requesterId: 'other2', requesterName: 'Fatima', isAnonymous: false, category: 'forgiveness', customText: 'Please make dua that Allah forgives me and my parents. They are getting old and I want the best for them in the akhirah.', suggestedDua: null, duasMadeCount: 7, lastDuaMadeAt: null, createdAt: Date.now() - 172800000, isActive: true },
-    { id: 'seed3', requesterId: 'other3', requesterName: 'Omar', isAnonymous: true, category: 'guidance', customText: null, suggestedDua: 'Guide us to the straight path.', duasMadeCount: 1, lastDuaMadeAt: null, createdAt: Date.now() - 43200000, isActive: true },
-    { id: 'seed4', requesterId: 'other4', requesterName: 'Khadija', isAnonymous: false, category: 'marriage', customText: 'Please make dua that Allah blesses me with a righteous and kind spouse who will help me grow closer to Allah.', suggestedDua: null, duasMadeCount: 12, lastDuaMadeAt: null, createdAt: Date.now() - 259200000, isActive: true },
-    { id: 'seed5', requesterId: 'other5', requesterName: 'Yusuf', isAnonymous: false, category: 'deceased_loved_ones', customText: 'My mother passed away last month. Please make dua for her — her name was Amina.', suggestedDua: null, duasMadeCount: 25, lastDuaMadeAt: null, createdAt: Date.now() - 3600000, isActive: true },
-    { id: 'seed6', requesterId: 'other6', requesterName: 'Aisha', isAnonymous: false, category: 'rizq', customText: null, suggestedDua: 'O Allah, suffice me with what You have allowed instead of what You have forbidden, and make me independent of all others besides You.', duasMadeCount: 5, lastDuaMadeAt: null, createdAt: Date.now() - 600000, isActive: true },
+    {
+      id: 'seed1', requesterId: 'other1', requesterName: 'Ahmed', isAnonymous: false,
+      category: 'health_and_healing', customText: null, suggestedDua: null,
+      holyOnly: false, duasMadeCount: 3, holyDuasCount: 2,
+      lastDuaMadeAt: null, createdAt: Date.now() - 86400000, isActive: true
+    },
+    {
+      id: 'seed2', requesterId: 'other2', requesterName: 'Fatima', isAnonymous: false,
+      category: 'forgiveness', customText: 'Please make dua that Allah forgives me and my parents. They are getting old and I want the best for them in the akhirah.', suggestedDua: null,
+      holyOnly: false, duasMadeCount: 7, holyDuasCount: 4,
+      lastDuaMadeAt: null, createdAt: Date.now() - 172800000, isActive: true
+    },
+    {
+      id: 'seed3', requesterId: 'other3', requesterName: 'Omar', isAnonymous: true,
+      category: 'guidance', customText: null, suggestedDua: 'Guide us to the straight path.',
+      holyOnly: true, duasMadeCount: 5, holyDuasCount: 5,
+      lastDuaMadeAt: null, createdAt: Date.now() - 43200000, isActive: true
+    },
+    {
+      id: 'seed4', requesterId: 'other4', requesterName: 'Khadija', isAnonymous: false,
+      category: 'marriage', customText: 'Please make dua that Allah blesses me with a righteous and kind spouse who will help me grow closer to Allah.', suggestedDua: null,
+      holyOnly: false, duasMadeCount: 12, holyDuasCount: 8,
+      lastDuaMadeAt: null, createdAt: Date.now() - 259200000, isActive: true
+    },
+    {
+      id: 'seed5', requesterId: 'other5', requesterName: 'Yusuf', isAnonymous: false,
+      category: 'deceased_loved_ones', customText: 'My mother passed away last month. Please make dua for her — her name was Amina.', suggestedDua: null,
+      holyOnly: true, duasMadeCount: 25, holyDuasCount: 25,
+      lastDuaMadeAt: null, createdAt: Date.now() - 3600000, isActive: true
+    },
+    {
+      id: 'seed6', requesterId: 'other6', requesterName: 'Aisha', isAnonymous: false,
+      category: 'rizq', customText: null, suggestedDua: 'O Allah, suffice me with what You have allowed instead of what You have forbidden, and make me independent of all others besides You.',
+      holyOnly: false, duasMadeCount: 5, holyDuasCount: 3,
+      lastDuaMadeAt: null, createdAt: Date.now() - 600000, isActive: true
+    },
+    {
+      id: 'seed7', requesterId: 'other7', requesterName: 'Ibrahim', isAnonymous: false,
+      category: 'jannah', customText: 'Please make dua that Allah grants my whole family Jannatul Firdaus. We all try our best but we know only His mercy can save us.',
+      holyOnly: false, duasMadeCount: 9, holyDuasCount: 6,
+      lastDuaMadeAt: null, createdAt: Date.now() - 7200000, isActive: true
+    },
+    {
+      id: 'seed8', requesterId: 'other8', requesterName: 'Maryam', isAnonymous: true,
+      category: 'patience_and_strength', customText: 'Going through a very difficult time. Please ask Allah to give me patience and ease. Ameen.',
+      holyOnly: true, duasMadeCount: 14, holyDuasCount: 14,
+      lastDuaMadeAt: null, createdAt: Date.now() - 1800000, isActive: true
+    },
   ];
 
   data.duaRequests = seeds;
@@ -78,7 +128,6 @@ export const FirebaseService = {
       const data = getDemoData();
       data.users[user.id] = { ...data.users[user.id], ...user };
       saveDemoData(data);
-      seedDemoData(user.id);
       return;
     }
     await setDoc(doc(db, 'users', user.id), user, { merge: true });
@@ -97,7 +146,14 @@ export const FirebaseService = {
   async createDuaRequest(request) {
     if (isDemoMode) {
       const data = getDemoData();
-      const newReq = { ...request, id: 'req_' + Date.now(), createdAt: Date.now(), duasMadeCount: 0, isActive: true };
+      const newReq = {
+        ...request,
+        id: 'req_' + Date.now(),
+        createdAt: Date.now(),
+        duasMadeCount: 0,
+        holyDuasCount: 0,
+        isActive: true
+      };
       data.duaRequests.unshift(newReq);
       if (data.users[request.requesterId]) {
         data.users[request.requesterId].duasRequestedCount = (data.users[request.requesterId].duasRequestedCount || 0) + 1;
@@ -117,7 +173,7 @@ export const FirebaseService = {
         .filter(r => r.isActive)
         .sort((a, b) => a.duasMadeCount - b.duasMadeCount || a.createdAt - b.createdAt);
     }
-    return null; // use listener instead
+    return null;
   },
 
   getMyDuaRequests(userId) {
@@ -130,27 +186,46 @@ export const FirebaseService = {
     return null;
   },
 
+  // location: holy site ID string if at holy site, null if making dua from elsewhere
   async markDuaAsMade(duaRequestId, makerId, makerName, location) {
+    const isHolySiteDua = !!location;
     if (isDemoMode) {
       const data = getDemoData();
       const req = data.duaRequests.find(r => r.id === duaRequestId);
       if (req) {
         req.duasMadeCount += 1;
+        if (isHolySiteDua) {
+          req.holyDuasCount = (req.holyDuasCount || 0) + 1;
+        }
         req.lastDuaMadeAt = Date.now();
       }
-      data.duaMadeRecords.push({ duaRequestId, makerId, makerName, location, madeAt: Date.now() });
+      data.duaMadeRecords.push({
+        duaRequestId, makerId, makerName,
+        location: location || 'non_holy',
+        isHolySite: isHolySiteDua,
+        madeAt: Date.now()
+      });
       if (data.users[makerId]) {
         data.users[makerId].duasMadeCount = (data.users[makerId].duasMadeCount || 0) + 1;
       }
       saveDemoData(data);
       return;
     }
-    const record = { duaRequestId, makerId, makerName, location, madeAt: serverTimestamp() };
+    const record = {
+      duaRequestId, makerId, makerName,
+      location: location || null,
+      isHolySite: isHolySiteDua,
+      madeAt: serverTimestamp()
+    };
     await addDoc(collection(db, 'duaMadeRecords'), record);
-    await updateDoc(doc(db, 'duaRequests', duaRequestId), {
+    const updates = {
       duasMadeCount: increment(1),
       lastDuaMadeAt: serverTimestamp()
-    });
+    };
+    if (isHolySiteDua) {
+      updates.holyDuasCount = increment(1);
+    }
+    await updateDoc(doc(db, 'duaRequests', duaRequestId), updates);
     await updateDoc(doc(db, 'users', makerId), { duasMadeCount: increment(1) });
   },
 
@@ -165,10 +240,9 @@ export const FirebaseService = {
     await updateDoc(doc(db, 'duaRequests', id), { isActive: false });
   },
 
-  // -- Listeners (Firebase real-time) --
+  // -- Listeners --
   listenToActiveRequests(callback) {
     if (isDemoMode) {
-      // Poll local storage for demo mode
       const poll = () => {
         const data = getDemoData();
         const requests = data.duaRequests
@@ -220,7 +294,6 @@ export const FirebaseService = {
   // -- Auth --
   async signInWithGoogle() {
     if (isDemoMode) {
-      // Demo user
       const demoUser = {
         id: 'demo_user_1',
         email: 'demo@pray4me.app',

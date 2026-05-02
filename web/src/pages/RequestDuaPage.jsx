@@ -11,6 +11,7 @@ export default function RequestDuaPage() {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [customText, setCustomText] = useState('');
   const [isAnonymous, setIsAnonymous] = useState(false);
+  const [holyOnly, setHolyOnly] = useState(false);
   const [showSuggested, setShowSuggested] = useState(false);
   const [selectedSuggested, setSelectedSuggested] = useState(null);
   const [submitting, setSubmitting] = useState(false);
@@ -19,6 +20,7 @@ export default function RequestDuaPage() {
     setSelectedCategory(null);
     setCustomText('');
     setIsAnonymous(false);
+    setHolyOnly(false);
     setShowSuggested(false);
     setSelectedSuggested(null);
   };
@@ -39,10 +41,12 @@ export default function RequestDuaPage() {
         requesterId: user.id,
         requesterName: user.displayName,
         isAnonymous,
+        holyOnly,
         category: selectedCategory.id,
         customText: customText.trim() || null,
         suggestedDua: selectedSuggested?.translation || null,
         duasMadeCount: 0,
+        holyDuasCount: 0,
         lastDuaMadeAt: null,
         createdAt: Date.now(),
         isActive: true,
@@ -168,6 +172,39 @@ export default function RequestDuaPage() {
               <div className="line"></div><div className="diamond">◆</div><div className="line"></div>
             </div>
 
+            {/* Who can make dua */}
+            <div style={{ marginBottom: 18 }}>
+              <div style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--charcoal)', marginBottom: 10 }}>
+                Who can make dua for you?
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                <button
+                  onClick={() => setHolyOnly(false)}
+                  className={`dua-scope-option ${!holyOnly ? 'selected' : ''}`}
+                >
+                  <span className="scope-icon">🌍</span>
+                  <div className="scope-text">
+                    <div className="scope-title">Anyone, anywhere on earth</div>
+                    <div className="scope-desc">More duas — from home, masjid, or holy sites</div>
+                  </div>
+                  <span className={`scope-check ${!holyOnly ? 'visible' : ''}`}>✓</span>
+                </button>
+
+                <button
+                  onClick={() => setHolyOnly(true)}
+                  className={`dua-scope-option ${holyOnly ? 'selected' : ''}`}
+                >
+                  <span className="scope-icon">🕌</span>
+                  <div className="scope-text">
+                    <div className="scope-title">Holy sites only</div>
+                    <div className="scope-desc">Duas exclusively from Makkah, Madinah & more</div>
+                  </div>
+                  <span className={`scope-check ${holyOnly ? 'visible' : ''}`}>✓</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Anonymous Toggle */}
             <div style={{ marginBottom: 22 }}>
               <div className="toggle-wrapper">
                 <button
@@ -197,7 +234,9 @@ export default function RequestDuaPage() {
             </button>
 
             <p className="caption text-center" style={{ marginTop: 12 }}>
-              Your request will be visible to Muslims at holy sites
+              {holyOnly
+                ? '🕌 Your request will only be visible to Muslims at holy sites'
+                : '🌍 Your request will be visible to Muslims everywhere'}
             </p>
           </div>
         )}
