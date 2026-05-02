@@ -292,6 +292,96 @@ export const FirebaseService = {
   },
 
   // -- Auth --
+  // -- Pilgrimage Collections --
+  async createPilgrimageCollection(data) {
+    if (isDemoMode) {
+      const d = getDemoData();
+      if (!d.pilgrimageCollections) d.pilgrimageCollections = {};
+      if (!d.collectionRequests) d.collectionRequests = {};
+      const id = 'pilgrim_' + Date.now();
+      d.pilgrimageCollections[id] = { id, ...data, requestCount: 0, createdAt: Date.now() };
+      saveDemoData(d);
+      return id;
+    }
+    const docRef = await addDoc(collection(db, 'pilgrimageCollections'), { ...data, createdAt: serverTimestamp() });
+    return docRef.id;
+  },
+
+  async getPilgrimageCollection(id) {
+    if (isDemoMode) {
+      const d = getDemoData();
+      return d.pilgrimageCollections?.[id] || null;
+    }
+    const snap = await getDoc(doc(db, 'pilgrimageCollections', id));
+    return snap.exists() ? { id: snap.id, ...snap.data() } : null;
+  },
+
+  async updatePilgrimageCollection(id, updates) {
+    if (isDemoMode) {
+      const d = getDemoData();
+      if (d.pilgrimageCollections?.[id]) Object.assign(d.pilgrimageCollections[id], updates);
+      saveDemoData(d);
+      return;
+    }
+    await updateDoc(doc(db, 'pilgrimageCollections', id), updates);
+  },
+
+  async submitDuaToCollection(collectionId, request) {
+    if (isDemoMode) {
+      const d = getDemoData();
+      if (!d.collectionRequests) d.collectionRequests = {};
+      if (!d.collectionRequests[collectionId]) d.collectionRequests[collectionId] = [];
+      const newReq = { id: 'creq_' + Date.now(), collectionId, ...request, isMade: false, createdAt: Date.now() };
+      d.collectionRequests[collectionId].unshift(newReq);
+      if (d.pilgrimageCollections?.[collectionId]) d.pilgrimageCollections[collectionId].requestCount = (d.collectionRequests[collectionId] || []).length;
+      saveDemoData(d);
+      return newReq.id;
+    }
+    const docRef = await addDoc(collection(db, 'collectionRequests'), { collectionId, ...request, isMade: false, createdAt: serverTimestamp() });
+    await updateDoc(doc(db, 'pilgrimageCollections', collectionId), { requestCount: increment(1) });
+    return docRef.id;
+  },
+
+  async markCollectionRequestMade(collectionId, requestId) {
+    if (isDemoMode) {
+      const d = getDemoData();
+      const req = (d.collectionRequests?.[collectionId] || []).find(r => r.id === requestId);
+      if (req) req.isMade = true;
+      saveDemoData(d);
+      return;
+    }
+    await updateDoc(doc(db, 'collectionRequests', requestId), { isMade: true });
+  },
+
+  listenToMyCollections(userId, callback) {
+    if (isDemoMode) {
+      const poll = () => {
+        const d = getDemoData();
+        const cols = Object.values(d.pilgrimageCollections || {}).filter(c => c.userId === userId).sort((a, b) => b.createdAt - a.createdAt);
+        callback(cols);
+      };
+      poll();
+      const interval = setInterval(poll, 2000);
+      return () => clearInterval(interval);
+    }
+    const q = query(collection(db, 'pilgrimageCollections'), where('userId', '==', userId), orderBy('createdAt', 'desc'));
+    return onSnapshot(q, snap => callback(snap.docs.map(d => ({ id: d.id, ...d.data() }))));
+  },
+
+  listenToCollectionRequests(collectionId, callback) {
+    if (isDemoMode) {
+      const poll = () => {
+        const d = getDemoData();
+        callback((d.collectionRequests?.[collectionId] || []).sort((a, b) => b.createdAt - a.createdAt));
+      };
+      poll();
+      const interval = setInterval(poll, 2000);
+      return () => clearInterval(interval);
+    }
+    const q = query(collection(db, 'collectionRequests'), where('collectionId', '==', collectionId), orderBy('createdAt', 'desc'));
+    return onSnapshot(q, snap => callback(snap.docs.map(d => ({ id: d.id, ...d.data() }))));
+  },
+
   async signInWithGoogle() {
     if (isDemoMode) {
       const demoUser = {

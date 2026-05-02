@@ -569,6 +569,151 @@ textarea:focus, input:focus {
 }
 .scope-check.visible { opacity: 1; }
 
+/* ── "Start Dua Mode" entry button ────────── */
+.btn-dua-mode {
+  display: flex; align-items: center; gap: 10; width: 100%;
+  padding: 13px 18px; border-radius: var(--radius-sm);
+  border: 2px solid var(--gold); background: linear-gradient(135deg, rgba(200,169,81,0.12), rgba(200,169,81,0.06));
+  cursor: pointer; font-family: inherit; font-weight: 700; font-size: 0.9rem;
+  color: var(--gold-dark); text-align: left; margin-bottom: 12px;
+  transition: background 0.18s, transform 0.15s;
+  justify-content: space-between;
+}
+.btn-dua-mode:hover { background: rgba(200,169,81,0.2); transform: translateY(-1px); }
+.btn-dua-mode-count {
+  background: var(--gold); color: white; border-radius: 20px;
+  padding: 2px 10px; font-size: 0.78rem; font-weight: 700;
+}
+
+/* ── Dua Mode full-screen overlay ─────────── */
+.dua-mode-overlay {
+  position: fixed; inset: 0; z-index: 500;
+  background: linear-gradient(160deg, #0D3B0F 0%, #1B5E20 50%, #0D3B0F 100%);
+  display: flex; flex-direction: column;
+  padding: env(safe-area-inset-top, 0) 0 env(safe-area-inset-bottom, 0);
+}
+
+.dua-mode-header {
+  display: flex; align-items: center; padding: 18px 20px 12px;
+  flex-shrink: 0;
+}
+.dua-mode-close {
+  background: rgba(255,255,255,0.15); border: none; color: white;
+  width: 34px; height: 34px; border-radius: 50%; cursor: pointer;
+  font-size: 1rem; display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: background 0.18s;
+}
+.dua-mode-close:hover { background: rgba(255,255,255,0.25); }
+.dua-mode-title {
+  color: white; font-family: var(--font-serif); font-weight: 700;
+  font-size: 0.95rem;
+}
+.dua-mode-site-badge {
+  font-size: 0.72rem; color: rgba(200,169,81,0.9); margin-top: 2px;
+  font-weight: 600;
+}
+.dua-mode-tally {
+  font-family: var(--font-serif); font-size: 0.9rem; font-weight: 700;
+  color: rgba(255,255,255,0.5);
+}
+
+.dua-mode-progress-track {
+  height: 3px; background: rgba(255,255,255,0.12); flex-shrink: 0; margin: 0;
+}
+.dua-mode-progress-fill {
+  height: 100%; background: var(--gold);
+  transition: width 0.5s ease; border-radius: 2px;
+}
+
+/* Main card */
+.dua-mode-card {
+  flex: 1; margin: 16px 20px 12px; background: rgba(255,255,255,0.07);
+  border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.12);
+  padding: 24px 22px; display: flex; flex-direction: column;
+  overflow-y: auto;
+}
+.dua-mode-holy-tag {
+  display: inline-block; font-size: 0.72rem; font-weight: 700;
+  background: rgba(200,169,81,0.2); color: rgba(200,169,81,0.95);
+  padding: 3px 10px; border-radius: 20px; margin-bottom: 14px;
+  border: 1px solid rgba(200,169,81,0.3);
+}
+.dua-mode-index {
+  font-size: 0.72rem; color: rgba(255,255,255,0.4); margin-bottom: 10px;
+  text-transform: uppercase; letter-spacing: 0.06em;
+}
+.dua-mode-category-pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7);
+  padding: 4px 12px; border-radius: 20px; font-size: 0.78rem;
+  margin-bottom: 16px; width: fit-content;
+}
+.dua-mode-name {
+  font-family: var(--font-serif); font-size: 1.15rem; font-weight: 700;
+  color: white; margin-bottom: 14px; line-height: 1.3;
+}
+.dua-mode-text {
+  font-size: 0.96rem; color: rgba(255,255,255,0.82); line-height: 1.75;
+  font-style: italic; flex: 1; margin-bottom: 16px;
+}
+.dua-mode-prev-count {
+  font-size: 0.76rem; color: rgba(255,255,255,0.35); margin-top: auto;
+}
+.dua-mode-made-badge {
+  display: inline-block; background: rgba(200,169,81,0.2);
+  color: rgba(200,169,81,0.95); padding: 6px 16px; border-radius: 20px;
+  font-size: 0.82rem; font-weight: 700; margin-top: 12px;
+  border: 1px solid rgba(200,169,81,0.35);
+}
+
+/* Confirm button */
+.dua-mode-action { padding: 0 20px 10px; flex-shrink: 0; }
+.dua-mode-confirm-btn {
+  width: 100%; padding: 16px 18px; border-radius: var(--radius-sm);
+  font-family: inherit; font-size: 1rem; font-weight: 700;
+  cursor: pointer; border: none; transition: opacity 0.18s, transform 0.15s;
+  letter-spacing: 0.01em;
+}
+.dua-mode-confirm-btn.holy { background: var(--green-primary); color: white; }
+.dua-mode-confirm-btn.anywhere { background: var(--gold); color: white; }
+.dua-mode-confirm-btn.made { background: rgba(255,255,255,0.12); color: rgba(200,169,81,0.9); cursor: default; }
+.dua-mode-confirm-btn:hover:not(:disabled) { opacity: 0.9; transform: translateY(-1px); }
+.dua-mode-confirm-btn:disabled { opacity: 0.65; cursor: default; transform: none; }
+
+/* Navigation row */
+.dua-mode-nav {
+  display: flex; align-items: center; gap: 12px;
+  padding: 8px 20px 20px; flex-shrink: 0;
+}
+.dua-mode-nav-btn {
+  background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.65); border-radius: var(--radius-xs);
+  padding: 9px 14px; cursor: pointer; font-size: 0.82rem; font-weight: 600;
+  flex-shrink: 0; transition: background 0.15s; font-family: inherit;
+}
+.dua-mode-nav-btn:hover:not(:disabled) { background: rgba(255,255,255,0.18); }
+.dua-mode-nav-btn:disabled { opacity: 0.3; cursor: default; }
+.dua-mode-dots { display: flex; gap: 6px; align-items: center; flex: 1; justify-content: center; }
+.dua-mode-dot {
+  width: 8px; height: 8px; border-radius: 50%; border: none; cursor: pointer;
+  background: rgba(255,255,255,0.2); padding: 0; transition: background 0.2s, transform 0.2s;
+}
+.dua-mode-dot.active { background: white; transform: scale(1.3); }
+.dua-mode-dot.made { background: var(--gold); opacity: 0.7; }
+
+/* Completion / empty state */
+.dua-mode-completion {
+  position: absolute; inset: 0; z-index: 10;
+  background: linear-gradient(160deg, #0D3B0F, #1B5E20);
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; text-align: center; padding: 32px 24px;
+}
+.dua-mode-empty {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; height: 100%; text-align: center;
+  padding: 32px; color: rgba(255,255,255,0.7); font-size: 0.9rem; line-height: 1.6;
+}
+
 /* Mobile responsive */
 @media (max-width: 480px) {
   .container { padding: 0 12px; }
