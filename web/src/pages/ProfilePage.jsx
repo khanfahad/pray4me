@@ -2,11 +2,13 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { FirebaseService } from '../services/firebase';
 import { getCategoryById } from '../services/data';
+import DonationModal from '../components/DonationModal';
 
 export default function ProfilePage() {
   const { user, logOut, refreshUser } = useAuth();
   const [myRequests, setMyRequests] = useState([]);
   const [showSignOut, setShowSignOut] = useState(false);
+  const [showDonation, setShowDonation] = useState(false);
 
   useEffect(() => {
     if (!user) return;
@@ -50,7 +52,7 @@ export default function ProfilePage() {
           <div className="card stat-card">
             <div className="stat-icon">💛</div>
             <div className="stat-value">{totalDuasReceived}</div>
-            <div className="stat-label">Duas Received</div>
+            <div className="stat-label">Received</div>
           </div>
           <div className="card stat-card">
             <div className="stat-icon">📋</div>
@@ -68,6 +70,37 @@ export default function ProfilePage() {
             </div>
           </div>
         )}
+
+        {/* Donation banner */}
+        <button
+          onClick={() => setShowDonation(true)}
+          style={{
+            width: '100%', border: 'none', cursor: 'pointer', background: 'none',
+            padding: 0, marginBottom: 20, textAlign: 'left',
+          }}
+        >
+          <div style={{
+            background: 'linear-gradient(135deg, #1B5E20 0%, #2E7D32 60%, #388E3C 100%)',
+            borderRadius: 'var(--radius)', padding: '16px 18px',
+            display: 'flex', alignItems: 'center', gap: 14,
+            boxShadow: '0 3px 12px rgba(27,94,32,0.3)',
+            transition: 'box-shadow 0.2s, transform 0.2s',
+          }}
+          onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 6px 20px rgba(27,94,32,0.4)'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
+          onMouseLeave={e => { e.currentTarget.style.boxShadow = '0 3px 12px rgba(27,94,32,0.3)'; e.currentTarget.style.transform = 'none'; }}
+          >
+            <span style={{ fontSize: '1.8rem', flexShrink: 0 }}>💛</span>
+            <div style={{ flex: 1 }}>
+              <div style={{ color: 'white', fontWeight: 700, fontSize: '0.92rem', fontFamily: 'var(--font-serif)', marginBottom: 2 }}>
+                Support Pray4Me
+              </div>
+              <div style={{ color: 'rgba(255,255,255,0.72)', fontSize: '0.78rem', lineHeight: 1.4 }}>
+                Help keep this service free for the Ummah
+              </div>
+            </div>
+            <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: '1.1rem' }}>›</span>
+          </div>
+        </button>
 
         <div className="islamic-divider">
           <div className="line"></div><div className="diamond">◆</div><div className="line"></div>
@@ -131,6 +164,12 @@ export default function ProfilePage() {
         </div>
 
         <div className="card" style={{ padding: 0, overflow: 'hidden', marginBottom: 20 }}>
+          <button className="settings-row" onClick={() => setShowDonation(true)}>
+            <span className="settings-icon">💛</span>
+            <span>Support Pray4Me</span>
+            <span className="settings-chevron">›</span>
+          </button>
+          <div style={{ height: 1, background: 'var(--border)', margin: '0 16px' }} />
           <button className="settings-row">
             <span className="settings-icon">🔔</span>
             <span>Notifications</span>
@@ -149,11 +188,12 @@ export default function ProfilePage() {
           </button>
         </div>
 
-        <p className="caption text-center" style={{ marginBottom: 20, opacity: 0.6 }}>
-          Pray4Me • Making the Ummah stronger, one dua at a time
+        <p className="caption text-center" style={{ marginBottom: 20, opacity: 0.55 }}>
+          Pray4Me · Making the Ummah stronger, one dua at a time
         </p>
       </div>
 
+      {/* Sign out modal */}
       {showSignOut && (
         <div style={{
           position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)',
@@ -173,6 +213,9 @@ export default function ProfilePage() {
           </div>
         </div>
       )}
+
+      {/* Donation modal */}
+      {showDonation && <DonationModal onClose={() => setShowDonation(false)} />}
     </div>
   );
 }

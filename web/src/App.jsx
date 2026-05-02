@@ -6,6 +6,7 @@ import HomePage from './pages/HomePage';
 import RequestDuaPage from './pages/RequestDuaPage';
 import MakeDuaPage from './pages/MakeDuaPage';
 import ProfilePage from './pages/ProfilePage';
+import Pray4MeLogo from './components/Pray4MeLogo';
 
 function App() {
   const { user, loading } = useAuth();
@@ -20,9 +21,11 @@ function App() {
         background: 'linear-gradient(150deg, var(--green-dark), var(--green-primary))',
         color: 'white',
       }}>
-        <div style={{ fontSize: '3.5rem', marginBottom: 16, filter: 'drop-shadow(0 4px 12px rgba(200,169,81,0.5))' }}>🌙</div>
+        <div className="pulse" style={{ marginBottom: 18 }}>
+          <Pray4MeLogo size={80} />
+        </div>
         <div style={{ fontFamily: 'var(--font-serif)', fontSize: '2rem', fontWeight: 700, marginBottom: 8 }}>Pray4Me</div>
-        <div style={{ opacity: 0.65, fontSize: '0.88rem' }}>Loading...</div>
+        <div style={{ opacity: 0.6, fontSize: '0.86rem' }}>Loading...</div>
       </div>
     );
   }

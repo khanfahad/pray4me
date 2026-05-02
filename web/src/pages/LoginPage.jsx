@@ -1,4 +1,5 @@
 import { useAuth } from '../contexts/AuthContext';
+import Pray4MeLogo from '../components/Pray4MeLogo';
 
 export default function LoginPage() {
   const { signIn } = useAuth();
@@ -7,7 +8,9 @@ export default function LoginPage() {
     <div className="login-page">
       <div className="login-hero">
         <div className="login-hero-content">
-          <span className="login-moon pulse">🌙</span>
+          <div className="pulse" style={{ display: 'inline-block', marginBottom: 12 }}>
+            <Pray4MeLogo size={96} />
+          </div>
           <h1>Pray4Me</h1>
           <p className="tagline">Request duas from Muslims<br/>at the holiest sites on earth</p>
           <p className="bismillah">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</p>
