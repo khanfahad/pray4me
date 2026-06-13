@@ -36,18 +36,24 @@ export { auth, db, isDemoMode };
 // ============================================================
 
 const DEMO_STORAGE_KEY = 'pray4me_demo_data';
-const DEMO_VERSION = 4; // bump to clear old cached data
+const DEMO_VERSION = 5; // bump to clear old cached data
 
 function getDemoData() {
   const raw = localStorage.getItem(DEMO_STORAGE_KEY);
   if (raw) {
     const parsed = JSON.parse(raw);
     if (parsed.__version === DEMO_VERSION) return parsed;
-    // Version mismatch — clear stale data but preserve users
-    const freshUsers = parsed.users || {};
-    return { __version: DEMO_VERSION, users: freshUsers, duaRequests: [], duaMadeRecords: [] };
+    // Version mismatch — clear stale dua requests but preserve users & pilgrim collections
+    return {
+      __version: DEMO_VERSION,
+      users: parsed.users || {},
+      duaRequests: [],
+      duaMadeRecords: [],
+      pilgrimageCollections: parsed.pilgrimageCollections || {},
+      collectionRequests: parsed.collectionRequests || {},
+    };
   }
-  return { __version: DEMO_VERSION, users: {}, duaRequests: [], duaMadeRecords: [] };
+  return { __version: DEMO_VERSION, users: {}, duaRequests: [], duaMadeRecords: {}, pilgrimageCollections: {}, collectionRequests: {} };
 }
 
 function saveDemoData(data) {
@@ -157,7 +163,71 @@ function seedDemoData(userId) {
   ];
 
   data.duaRequests = seeds;
+
+  // Pre-seed a demo pilgrimage collection so the shareable link works for anyone
+  const DEMO_COLLECTION_ID = 'demo_hajj_2026';
+  if (!data.pilgrimageCollections) data.pilgrimageCollections = {};
+  if (!data.collectionRequests) data.collectionRequests = {};
+
+  if (!data.pilgrimageCollections[DEMO_COLLECTION_ID]) {
+    data.pilgrimageCollections[DEMO_COLLECTION_ID] = {
+      id: DEMO_COLLECTION_ID,
+      userId,
+      pilgrimName: 'Abdullah',
+      destination: 'both',
+      isUmrah: false,
+      departureDate: '2026-06-15',
+      isActive: true,
+      requestCount: 6,
+      createdAt: now - 259200000,
+    };
+    data.collectionRequests[DEMO_COLLECTION_ID] = [
+      {
+        id: 'creq_demo1', collectionId: DEMO_COLLECTION_ID,
+        submitterName: 'Mama', isPrivate: false, isMade: true,
+        duaText: 'Please make dua for my health, ya ibni. My knees have been giving me trouble. May Allah grant me shifa and ease.',
+        createdAt: now - 172800000,
+      },
+      {
+        id: 'creq_demo2', collectionId: DEMO_COLLECTION_ID,
+        submitterName: 'Uncle Tariq', isPrivate: false, isMade: false,
+        duaText: 'Ask Allah to open doors of rizq for me. My business has been slow and I have three kids to feed. JazakAllah khair.',
+        createdAt: now - 86400000,
+      },
+      {
+        id: 'creq_demo3', collectionId: DEMO_COLLECTION_ID,
+        submitterName: 'Sister Nadia', isPrivate: false, isMade: false,
+        duaText: 'Please make dua that Allah grants me a righteous husband soon. I have been waiting and I know He is the best of planners.',
+        createdAt: now - 43200000,
+      },
+      {
+        id: 'creq_demo4', collectionId: DEMO_COLLECTION_ID,
+        submitterName: 'Cousin Hamza', isPrivate: false, isMade: true,
+        duaText: 'Dua for my medical school exams please! I need all the help I can get. May Allah make it easy.',
+        createdAt: now - 36000000,
+      },
+      {
+        id: 'creq_demo5', collectionId: DEMO_COLLECTION_ID,
+        submitterName: 'Auntie Sana', isPrivate: false, isMade: false,
+        duaText: 'Please remember my late husband in your duas at the Haram. His name was Khalid ibn Mustafa. May Allah have mercy on his soul and grant him Jannatul Firdaus.',
+        createdAt: now - 21600000,
+      },
+      {
+        id: 'creq_demo6', collectionId: DEMO_COLLECTION_ID,
+        submitterName: null, isPrivate: true, isMade: false,
+        duaText: 'Please make dua for my marriage — it is going through a very hard time. Only Allah can fix what is broken. Ameen.',
+        createdAt: now - 7200000,
+      },
+    ];
+  }
+
   saveDemoData(data);
+}
+
+// Seed the demo collection immediately on module load (no auth needed)
+// so the shareable link works even for unauthenticated visitors
+if (isDemoMode) {
+  seedDemoData('demo_user_1');
 }
 
 // ============================================================
