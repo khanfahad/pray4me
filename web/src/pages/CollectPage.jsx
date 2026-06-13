@@ -99,7 +99,13 @@ export default function CollectPage({ collectionId, onBack }) {
     other: collection.destination,
   }[collection.destination] || collection.destination;
 
-  const tripLabel = collection.isUmrah ? 'Umrah' : 'Hajj';
+  function getCollectionTitle(col) {
+    const date = col.departureDate ? new Date(col.departureDate) : new Date();
+    const year = date.getFullYear();
+    if (!col.isUmrah) return `Hajj ${year}`;
+    const month = date.toLocaleDateString('en-US', { month: 'short' });
+    return col.departureDate ? `Umrah ${month} ${year}` : `Umrah ${year}`;
+  }
 
   if (submitted) {
     return (
@@ -157,11 +163,14 @@ export default function CollectPage({ collectionId, onBack }) {
         <div style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.78rem', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>
           Pilgrimage Dua Collection
         </div>
-        <h1 style={{ fontFamily: 'var(--font-serif)', color: 'white', fontSize: '1.6rem', marginBottom: 6 }}>
-          {collection.pilgrimName}
+        <h1 style={{ fontFamily: 'var(--font-serif)', color: 'white', fontSize: '1.8rem', marginBottom: 4 }}>
+          {getCollectionTitle(collection)}
         </h1>
-        <div style={{ color: 'rgba(255,255,255,0.75)', fontSize: '0.9rem', marginBottom: 4 }}>
-          is going to {destLabel} for {tripLabel}
+        <div style={{ color: 'rgba(255,255,255,0.85)', fontSize: '0.95rem', fontWeight: 600, marginBottom: 2 }}>
+          {collection.pilgrimName}
+        </div>
+        <div style={{ color: 'rgba(255,255,255,0.65)', fontSize: '0.85rem', marginBottom: 4 }}>
+          {destLabel}
         </div>
         {collection.departureDate && (
           <div style={{ color: 'rgba(200,169,81,0.9)', fontSize: '0.82rem' }}>

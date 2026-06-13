@@ -36,7 +36,7 @@ export { auth, db, isDemoMode };
 // ============================================================
 
 const DEMO_STORAGE_KEY = 'pray4me_demo_data';
-const DEMO_VERSION = 3; // bump to clear old cached data
+const DEMO_VERSION = 4; // bump to clear old cached data
 
 function getDemoData() {
   const raw = localStorage.getItem(DEMO_STORAGE_KEY);
@@ -62,54 +62,97 @@ function seedDemoData(userId) {
   const data = getDemoData();
   if (data.duaRequests.length > 0) return;
 
+  const now = Date.now();
   const seeds = [
     {
       id: 'seed1', requesterId: 'other1', requesterName: 'Ahmed', isAnonymous: false,
-      category: 'health_and_healing', customText: null, suggestedDua: null,
+      category: 'health_and_healing', customText: 'My father has been ill for months. Please make dua that Allah grants him a full recovery and eases his pain.', suggestedDua: null,
       holyOnly: false, duasMadeCount: 3, holyDuasCount: 2,
-      lastDuaMadeAt: null, createdAt: Date.now() - 86400000, isActive: true
+      lastDuaMadeAt: null, createdAt: now - 86400000, isActive: true
     },
     {
       id: 'seed2', requesterId: 'other2', requesterName: 'Fatima', isAnonymous: false,
       category: 'forgiveness', customText: 'Please make dua that Allah forgives me and my parents. They are getting old and I want the best for them in the akhirah.', suggestedDua: null,
       holyOnly: false, duasMadeCount: 7, holyDuasCount: 4,
-      lastDuaMadeAt: null, createdAt: Date.now() - 172800000, isActive: true
+      lastDuaMadeAt: null, createdAt: now - 172800000, isActive: true
     },
     {
       id: 'seed3', requesterId: 'other3', requesterName: 'Omar', isAnonymous: true,
-      category: 'guidance', customText: null, suggestedDua: 'Guide us to the straight path.',
+      category: 'guidance', customText: 'Please ask Allah to guide me back to the straight path. I have been struggling with my deen and feel lost.', suggestedDua: null,
       holyOnly: true, duasMadeCount: 5, holyDuasCount: 5,
-      lastDuaMadeAt: null, createdAt: Date.now() - 43200000, isActive: true
+      lastDuaMadeAt: null, createdAt: now - 43200000, isActive: true
     },
     {
       id: 'seed4', requesterId: 'other4', requesterName: 'Khadija', isAnonymous: false,
-      category: 'marriage', customText: 'Please make dua that Allah blesses me with a righteous and kind spouse who will help me grow closer to Allah.', suggestedDua: null,
+      category: 'marriage', customText: 'Please make dua that Allah blesses me with a righteous and kind spouse who will help me grow closer to Him. I have been waiting a long time.', suggestedDua: null,
       holyOnly: false, duasMadeCount: 12, holyDuasCount: 8,
-      lastDuaMadeAt: null, createdAt: Date.now() - 259200000, isActive: true
+      lastDuaMadeAt: null, createdAt: now - 259200000, isActive: true
     },
     {
       id: 'seed5', requesterId: 'other5', requesterName: 'Yusuf', isAnonymous: false,
-      category: 'deceased_loved_ones', customText: 'My mother passed away last month. Please make dua for her — her name was Amina.', suggestedDua: null,
+      category: 'deceased_loved_ones', customText: 'My mother passed away last month. Please make dua for her — her name was Amina bint Ibrahim. May Allah have mercy on her soul.', suggestedDua: null,
       holyOnly: true, duasMadeCount: 25, holyDuasCount: 25,
-      lastDuaMadeAt: null, createdAt: Date.now() - 3600000, isActive: true
+      lastDuaMadeAt: null, createdAt: now - 3600000, isActive: true
     },
     {
       id: 'seed6', requesterId: 'other6', requesterName: 'Aisha', isAnonymous: false,
-      category: 'rizq', customText: null, suggestedDua: 'O Allah, suffice me with what You have allowed instead of what You have forbidden, and make me independent of all others besides You.',
+      category: 'rizq', customText: 'My family is going through financial hardship. Please make dua that Allah opens doors of halal rizq and removes this burden from us.', suggestedDua: null,
       holyOnly: false, duasMadeCount: 5, holyDuasCount: 3,
-      lastDuaMadeAt: null, createdAt: Date.now() - 600000, isActive: true
+      lastDuaMadeAt: null, createdAt: now - 600000, isActive: true
     },
     {
       id: 'seed7', requesterId: 'other7', requesterName: 'Ibrahim', isAnonymous: false,
-      category: 'jannah', customText: 'Please make dua that Allah grants my whole family Jannatul Firdaus. We all try our best but we know only His mercy can save us.',
+      category: 'jannah', customText: 'Please make dua that Allah grants my whole family Jannatul Firdaus. We all try our best but we know only His mercy can save us.', suggestedDua: null,
       holyOnly: false, duasMadeCount: 9, holyDuasCount: 6,
-      lastDuaMadeAt: null, createdAt: Date.now() - 7200000, isActive: true
+      lastDuaMadeAt: null, createdAt: now - 7200000, isActive: true
     },
     {
       id: 'seed8', requesterId: 'other8', requesterName: 'Maryam', isAnonymous: true,
-      category: 'patience_and_strength', customText: 'Going through a very difficult time. Please ask Allah to give me patience and ease. Ameen.',
+      category: 'patience_and_strength', customText: 'Going through a very difficult time — please ask Allah to give me sabr and ease. I trust in His plan but my heart is heavy.', suggestedDua: null,
       holyOnly: true, duasMadeCount: 14, holyDuasCount: 14,
-      lastDuaMadeAt: null, createdAt: Date.now() - 1800000, isActive: true
+      lastDuaMadeAt: null, createdAt: now - 1800000, isActive: true
+    },
+    {
+      id: 'seed9', requesterId: 'other9', requesterName: 'Zainab', isAnonymous: false,
+      category: 'studies_and_work', customText: 'I have my final exams next week. Please make dua that Allah grants me focus, retention, and success. I want to make my parents proud.', suggestedDua: null,
+      holyOnly: false, duasMadeCount: 2, holyDuasCount: 1,
+      lastDuaMadeAt: null, createdAt: now - 300000, isActive: true
+    },
+    {
+      id: 'seed10', requesterId: 'other10', requesterName: 'Hassan', isAnonymous: false,
+      category: 'family_and_children', customText: 'Please make dua for my children — that Allah keeps them steadfast on the deen, protects them from harm, and makes them among the righteous.', suggestedDua: null,
+      holyOnly: false, duasMadeCount: 18, holyDuasCount: 10,
+      lastDuaMadeAt: null, createdAt: now - 10800000, isActive: true
+    },
+    {
+      id: 'seed11', requesterId: 'other11', requesterName: 'Safiya', isAnonymous: false,
+      category: 'protection', customText: 'Please make dua that Allah protects my family from the evil eye, envy, and any harm. We have been experiencing a lot of misfortune lately.', suggestedDua: null,
+      holyOnly: true, duasMadeCount: 6, holyDuasCount: 6,
+      lastDuaMadeAt: null, createdAt: now - 21600000, isActive: true
+    },
+    {
+      id: 'seed12', requesterId: 'other12', requesterName: 'Bilal', isAnonymous: false,
+      category: 'ummah', customText: 'Please make dua for the entire Ummah — for those suffering in war, poverty, and oppression. May Allah ease their hardship and grant them victory.', suggestedDua: null,
+      holyOnly: true, duasMadeCount: 31, holyDuasCount: 31,
+      lastDuaMadeAt: null, createdAt: now - 900000, isActive: true
+    },
+    {
+      id: 'seed13', requesterId: 'other13', requesterName: 'Nour', isAnonymous: true,
+      category: 'health_and_healing', customText: 'I have been struggling with my mental health for a long time. Please make dua that Allah heals my heart and mind, and fills me with hope.', suggestedDua: null,
+      holyOnly: false, duasMadeCount: 8, holyDuasCount: 4,
+      lastDuaMadeAt: null, createdAt: now - 14400000, isActive: true
+    },
+    {
+      id: 'seed14', requesterId: 'other14', requesterName: 'Adam', isAnonymous: false,
+      category: 'guidance', customText: 'I am a new Muslim, alhamdulillah. Please make dua that Allah keeps me firm on this path and helps me learn my deen properly.', suggestedDua: null,
+      holyOnly: false, duasMadeCount: 19, holyDuasCount: 12,
+      lastDuaMadeAt: null, createdAt: now - 32400000, isActive: true
+    },
+    {
+      id: 'seed15', requesterId: 'other15', requesterName: 'Ruqayyah', isAnonymous: false,
+      category: 'deceased_loved_ones', customText: 'My grandmother passed away peacefully last year, alhamdulillah. Her name was Hajja Ruqayyah. Please remember her in your duas at the Haram.', suggestedDua: null,
+      holyOnly: true, duasMadeCount: 22, holyDuasCount: 22,
+      lastDuaMadeAt: null, createdAt: now - 54000000, isActive: true
     },
   ];
 

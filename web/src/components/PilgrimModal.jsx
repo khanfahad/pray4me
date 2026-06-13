@@ -143,6 +143,14 @@ function CreateForm({ user, onCreated, onClose }) {
   );
 }
 
+function getCollectionTitle(collection) {
+  const date = collection.departureDate ? new Date(collection.departureDate) : new Date();
+  const year = date.getFullYear();
+  if (!collection.isUmrah) return `Hajj ${year}`;
+  const month = date.toLocaleDateString('en-US', { month: 'short' });
+  return collection.departureDate ? `Umrah ${month} ${year}` : `Umrah ${year}`;
+}
+
 function CollectionView({ collection, collectionId, requests, onDeactivate, onOpenDuaMode }) {
   const shareUrl = `${window.location.origin}${window.location.pathname}#collect/${collectionId}`;
   const [copied, setCopied] = useState(false);
@@ -170,9 +178,10 @@ function CollectionView({ collection, collectionId, requests, onDeactivate, onOp
     <div>
       <div style={{ textAlign: 'center', marginBottom: 16 }}>
         <div style={{ fontSize: '1.8rem', marginBottom: 6 }}>🕌</div>
-        <div style={{ fontFamily: 'var(--font-serif)', fontWeight: 700, fontSize: '1rem', color: 'var(--charcoal)', marginBottom: 4 }}>
-          {collection.isUmrah ? 'Umrah' : 'Hajj'} — {destLabel}
+        <div style={{ fontFamily: 'var(--font-serif)', fontWeight: 700, fontSize: '1.1rem', color: 'var(--charcoal)', marginBottom: 2 }}>
+          {getCollectionTitle(collection)}
         </div>
+        <div className="caption" style={{ marginBottom: 2 }}>{destLabel}</div>
         {collection.departureDate && (
           <div className="caption">Departing {new Date(collection.departureDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</div>
         )}
