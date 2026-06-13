@@ -267,6 +267,70 @@ export default function MakeDuaPage({ locationState }) {
       </div>
       <div className="header-accent" />
 
+      {/* Prominent Dua Mode entry — always visible */}
+      <div className="container" style={{ marginTop: 18, marginBottom: 0 }}>
+        <button
+          onClick={enterFullDuaMode}
+          style={{
+            width: '100%', border: 'none', cursor: 'pointer', padding: 0,
+            background: 'none', marginBottom: 10,
+          }}
+        >
+          <div style={{
+            background: 'linear-gradient(135deg, #1B5E20 0%, #2E7D32 60%, #388E3C 100%)',
+            borderRadius: 'var(--radius)', padding: '18px 20px',
+            display: 'flex', alignItems: 'center', gap: 14,
+            boxShadow: '0 4px 16px rgba(27,94,32,0.35)',
+          }}>
+            <span style={{ fontSize: '2rem', flexShrink: 0 }}>✨</span>
+            <div style={{ flex: 1, textAlign: 'left' }}>
+              <div style={{ color: 'white', fontWeight: 700, fontSize: '1rem', fontFamily: 'var(--font-serif)', marginBottom: 3 }}>
+                Start Dua Mode
+              </div>
+              <div style={{ color: 'rgba(255,255,255,0.72)', fontSize: '0.78rem' }}>
+                No-distraction mode — one dua at a time, full focus
+              </div>
+            </div>
+            <div style={{
+              background: 'rgba(255,255,255,0.18)', borderRadius: 20,
+              padding: '4px 12px', color: 'white', fontSize: '0.78rem', fontWeight: 700,
+            }}>
+              {displayList.length + SUNNAH_DUAS.length} duas
+            </div>
+          </div>
+        </button>
+        <button
+          onClick={enterSunnahDuaMode}
+          style={{
+            width: '100%', border: 'none', cursor: 'pointer', padding: 0,
+            background: 'none', marginBottom: 4,
+          }}
+        >
+          <div style={{
+            background: 'linear-gradient(135deg, #7B5E1A, #C8A951)',
+            borderRadius: 'var(--radius)', padding: '14px 20px',
+            display: 'flex', alignItems: 'center', gap: 14,
+            boxShadow: '0 3px 12px rgba(200,169,81,0.3)',
+          }}>
+            <span style={{ fontSize: '1.6rem', flexShrink: 0 }}>📖</span>
+            <div style={{ flex: 1, textAlign: 'left' }}>
+              <div style={{ color: 'white', fontWeight: 700, fontSize: '0.92rem', fontFamily: 'var(--font-serif)', marginBottom: 2 }}>
+                Sunnah Duas Only
+              </div>
+              <div style={{ color: 'rgba(255,255,255,0.75)', fontSize: '0.76rem' }}>
+                Duas from Quran & Sunnah — no login needed
+              </div>
+            </div>
+            <div style={{
+              background: 'rgba(255,255,255,0.2)', borderRadius: 20,
+              padding: '4px 12px', color: 'white', fontSize: '0.78rem', fontWeight: 700,
+            }}>
+              {SUNNAH_DUAS.length} duas
+            </div>
+          </div>
+        </button>
+      </div>
+
       {isAtHolySite ? (
         <>
           <div className="container" style={{ marginTop: 18 }}>
@@ -375,7 +439,7 @@ export default function MakeDuaPage({ locationState }) {
       {duaModeActive && (
         <DuaMode
           requests={duaModeSunnahOnly ? [] : displayList}
-          sunnahDuas={duaModeSunnahOnly ? SUNNAH_DUAS : []}
+          sunnahDuas={SUNNAH_DUAS}
           isAtHolySite={isAtHolySite}
           onMakeDua={handleMakeDua}
           onClose={() => setDuaModeActive(false)}
