@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { getCategoryById } from '../services/data';
 
 export default function DuaMode({ requests, sunnahDuas = [], isAtHolySite, onMakeDua, onClose }) {
@@ -11,6 +11,13 @@ export default function DuaMode({ requests, sunnahDuas = [], isAtHolySite, onMak
   const [made, setMade] = useState(new Set());
   const [confirming, setConfirming] = useState(false);
   const [done, setDone] = useState(false);
+
+  // Clamp index if allItems shrinks (e.g. a request is removed while DuaMode is open)
+  useEffect(() => {
+    if (allItems.length > 0 && index >= allItems.length) {
+      setIndex(allItems.length - 1);
+    }
+  }, [allItems.length]);
 
   if (allItems.length === 0) {
     return (

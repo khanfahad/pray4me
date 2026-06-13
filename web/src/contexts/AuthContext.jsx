@@ -1,3 +1,4 @@
+// @refresh reset
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { FirebaseService, isDemoMode } from '../services/firebase';
 
