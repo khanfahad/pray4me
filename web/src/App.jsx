@@ -48,7 +48,7 @@ function App() {
         <div className="pulse" style={{ marginBottom: 18 }}>
           <Pray4MeLogo size={80} />
         </div>
-        <div style={{ fontFamily: 'var(--font-serif)', fontSize: '2rem', fontWeight: 700, marginBottom: 8 }}>Pray4Me</div>
+        <div style={{ fontFamily: 'var(--font-serif)', fontSize: '2rem', fontWeight: 700, marginBottom: 8 }}>Dua' 4 Me</div>
         <div style={{ opacity: 0.6, fontSize: '0.86rem' }}>Loading...</div>
       </div>
     );

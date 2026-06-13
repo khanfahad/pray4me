@@ -11,7 +11,7 @@ export default function LoginPage() {
           <div className="pulse" style={{ display: 'inline-block', marginBottom: 12 }}>
             <Pray4MeLogo size={96} />
           </div>
-          <h1>Pray4Me</h1>
+          <h1>Dua' 4 Me</h1>
           <p className="tagline">Request duas from Muslims<br/>at the holiest sites on earth</p>
           <p className="bismillah">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</p>
         </div>

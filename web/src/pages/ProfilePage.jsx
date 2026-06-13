@@ -112,7 +112,7 @@ export default function ProfilePage() {
           }}>
             <span style={{ fontSize: '1.8rem', flexShrink: 0 }}>💛</span>
             <div style={{ flex: 1 }}>
-              <div style={{ color: 'white', fontWeight: 700, fontSize: '0.92rem', fontFamily: 'var(--font-serif)', marginBottom: 2 }}>Support Pray4Me</div>
+              <div style={{ color: 'white', fontWeight: 700, fontSize: '0.92rem', fontFamily: 'var(--font-serif)', marginBottom: 2 }}>Support Dua' 4 Me</div>
               <div style={{ color: 'rgba(255,255,255,0.72)', fontSize: '0.78rem' }}>Help keep this service free for the Ummah</div>
             </div>
             <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: '1.1rem' }}>›</span>
@@ -169,7 +169,7 @@ export default function ProfilePage() {
           </button>
           <div style={{ height: 1, background: 'var(--border)', margin: '0 16px' }} />
           <button className="settings-row" onClick={() => setShowDonation(true)}>
-            <span className="settings-icon">💛</span><span>Support Pray4Me</span><span className="settings-chevron">›</span>
+            <span className="settings-icon">💛</span><span>Support Dua' 4 Me</span><span className="settings-chevron">›</span>
           </button>
           <div style={{ height: 1, background: 'var(--border)', margin: '0 16px' }} />
           <button className="settings-row">
@@ -177,7 +177,7 @@ export default function ProfilePage() {
           </button>
           <div style={{ height: 1, background: 'var(--border)', margin: '0 16px' }} />
           <button className="settings-row">
-            <span className="settings-icon">ℹ️</span><span>About Pray4Me</span><span className="settings-chevron">›</span>
+            <span className="settings-icon">ℹ️</span><span>About Dua' 4 Me</span><span className="settings-chevron">›</span>
           </button>
           <div style={{ height: 1, background: 'var(--border)', margin: '0 16px' }} />
           <button className="settings-row" onClick={() => setShowSignOut(true)} style={{ color: 'var(--red)' }}>
@@ -185,7 +185,7 @@ export default function ProfilePage() {
           </button>
         </div>
 
-        <p className="caption text-center" style={{ marginBottom: 20, opacity: 0.55 }}>Pray4Me · Making the Ummah stronger, one dua at a time</p>
+        <p className="caption text-center" style={{ marginBottom: 20, opacity: 0.55 }}>Dua' 4 Me · Making the Ummah stronger, one dua at a time</p>
       </div>
 
       {/* Sign out modal */}

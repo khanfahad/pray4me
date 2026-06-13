@@ -8,7 +8,7 @@ export default function Pray4MeLogo({ size = 64, className = '', showBg = true }
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
-      aria-label="Pray4Me logo"
+      aria-label="Dua' 4 Me logo"
     >
       <defs>
         <radialGradient id={`${id}-bg`} cx="50%" cy="40%" r="60%">
