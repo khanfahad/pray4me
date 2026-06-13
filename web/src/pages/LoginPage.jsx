@@ -12,7 +12,7 @@ export default function LoginPage() {
             <Pray4MeLogo size={96} />
           </div>
           <h1>Dua' 4 Me</h1>
-          <p className="tagline">Request duas from Muslims<br/>at the holiest sites on earth</p>
+          <p className="tagline">Request and make duas<br/>with Muslims around the world</p>
           <p className="bismillah">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</p>
         </div>
       </div>

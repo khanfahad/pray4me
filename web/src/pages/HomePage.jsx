@@ -63,27 +63,19 @@ export default function HomePage({ locationState }) {
       <div className="islamic-header">
         <div className="header-content">
           <div className="icon">🌙</div>
-          <h1>Pray4Me</h1>
+          <h1>Dua' 4 Me</h1>
           <p className="subtitle">{greeting}, {firstName} — As-salamu alaykum</p>
         </div>
       </div>
       <div className="header-accent" />
 
       <div className="container" style={{ marginTop: 20 }}>
-        {locationState.isAtHolySite && locationState.currentSite ? (
+        {locationState.isAtHolySite && locationState.currentSite && (
           <div className="info-banner green fade-in" style={{ marginBottom: 16 }}>
             <span className="banner-icon">📍</span>
             <div className="banner-text">
               <div className="banner-title">You are at {locationState.currentSite.name}</div>
-              Dua requests are available. May Allah accept your prayers.
-            </div>
-          </div>
-        ) : (
-          <div className="info-banner gray" style={{ marginBottom: 16 }}>
-            <span className="banner-icon" style={{ opacity: 0.5 }}>📍</span>
-            <div className="banner-text">
-              <div className="banner-title">Not at a holy site</div>
-              You can still request duas. Making dua for others is available at holy sites.
+              May Allah accept your prayers from this blessed place.
             </div>
           </div>
         )}
