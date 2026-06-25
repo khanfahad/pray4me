@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { FirebaseService } from '../services/firebase';
 import { DUA_CATEGORIES } from '../services/data';
+import MosqueSilhouette from '../components/MosqueSilhouette';
+import StarfieldBackground from '../components/StarfieldBackground';
 import toast from 'react-hot-toast';
 
 const MAX_CUSTOM_LENGTH = 200;
@@ -64,10 +66,13 @@ export default function RequestDuaPage() {
   return (
     <div className="page-content">
       <div className="islamic-header">
+        <StarfieldBackground starCount={30} />
+        <MosqueSilhouette />
         <div className="header-content">
-          <div className="icon">🤲</div>
+          <div className="icon float">🤲</div>
           <h1>Request a Dua</h1>
           <p className="subtitle">Ask the Ummah to pray for you</p>
+          <p className="bismillah-watermark">بِسْمِ ٱللَّهِ</p>
         </div>
       </div>
       <div className="header-accent" />
@@ -168,8 +173,8 @@ export default function RequestDuaPage() {
               </div>
             )}
 
-            <div className="islamic-divider" style={{ margin: '20px 0' }}>
-              <div className="line"></div><div className="diamond">◆</div><div className="line"></div>
+            <div className="islamic-divider-ornate" style={{ margin: '20px 0' }}>
+              <div className="line"></div><div className="ornament">۞</div><div className="line"></div>
             </div>
 
             {/* Who can make dua */}

@@ -3,6 +3,8 @@ import { useAuth } from '../contexts/AuthContext';
 import { FirebaseService } from '../services/firebase';
 import { DUA_CATEGORIES, HOLY_SITES } from '../services/data';
 import DuaCard from '../components/DuaCard';
+import MosqueSilhouette from '../components/MosqueSilhouette';
+import StarfieldBackground from '../components/StarfieldBackground';
 
 const SORT_OPTIONS = [
   { id: 'shuffle', label: 'Shuffle', icon: '🔀' },
@@ -61,10 +63,13 @@ export default function HomePage({ locationState }) {
   return (
     <div className="page-content">
       <div className="islamic-header">
+        <StarfieldBackground starCount={30} />
+        <MosqueSilhouette />
         <div className="header-content">
-          <div className="icon">🌙</div>
+          <div className="icon float">🌙</div>
           <h1>Dua' 4 Me</h1>
           <p className="subtitle">{greeting}, {firstName} — As-salamu alaykum</p>
+          <p className="bismillah-watermark">بِسْمِ ٱللَّهِ</p>
         </div>
       </div>
       <div className="header-accent" />
@@ -110,8 +115,10 @@ export default function HomePage({ locationState }) {
           </div>
         </div>
 
-        <div className="islamic-divider">
-          <div className="line"></div><div className="diamond">◆</div><div className="line"></div>
+        <div className="islamic-divider-ornate">
+          <div className="line"></div>
+          <div className="ornament">۞</div>
+          <div className="line"></div>
         </div>
 
         <div className="section-header">

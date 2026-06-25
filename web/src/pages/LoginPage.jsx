@@ -1,5 +1,7 @@
 import { useAuth } from '../contexts/AuthContext';
 import Pray4MeLogo from '../components/Pray4MeLogo';
+import MosqueSilhouette from '../components/MosqueSilhouette';
+import StarfieldBackground from '../components/StarfieldBackground';
 
 export default function LoginPage() {
   const { signIn } = useAuth();
@@ -7,13 +9,16 @@ export default function LoginPage() {
   return (
     <div className="login-page">
       <div className="login-hero">
+        <StarfieldBackground starCount={50} />
+        <MosqueSilhouette color="rgba(200,169,81,0.08)" />
+
         <div className="login-hero-content">
-          <div className="pulse" style={{ display: 'inline-block', marginBottom: 12 }}>
-            <Pray4MeLogo size={96} />
+          <div className="float" style={{ display: 'inline-block', marginBottom: 12 }}>
+            <Pray4MeLogo size={100} />
           </div>
           <h1>Dua' 4 Me</h1>
           <p className="tagline">Request and make duas<br/>with Muslims around the world</p>
-          <p className="bismillah">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</p>
+          <p className="bismillah">بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ</p>
         </div>
       </div>
 

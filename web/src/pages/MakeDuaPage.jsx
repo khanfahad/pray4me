@@ -4,6 +4,8 @@ import { FirebaseService } from '../services/firebase';
 import { DUA_CATEGORIES, HOLY_SITES, SUNNAH_DUAS } from '../services/data';
 import DuaCard from '../components/DuaCard';
 import DuaMode from '../components/DuaMode';
+import MosqueSilhouette from '../components/MosqueSilhouette';
+import StarfieldBackground from '../components/StarfieldBackground';
 import toast from 'react-hot-toast';
 
 const SORT_OPTIONS = [
@@ -66,8 +68,8 @@ function SunnahDuasSection({ onEnterDuaMode }) {
 
   return (
     <div className="container" style={{ marginBottom: 8 }}>
-      <div className="islamic-divider" style={{ margin: '8px 0 16px' }}>
-        <div className="line"></div><div className="diamond">◆</div><div className="line"></div>
+      <div className="islamic-divider-ornate" style={{ margin: '8px 0 16px' }}>
+        <div className="line"></div><div className="ornament">۞</div><div className="line"></div>
       </div>
 
       <button
@@ -255,14 +257,17 @@ export default function MakeDuaPage({ locationState }) {
   return (
     <div className="page-content">
       <div className="islamic-header">
+        <StarfieldBackground starCount={30} />
+        <MosqueSilhouette />
         <div className="header-content">
-          <div className="icon">🤲</div>
+          <div className="icon float">🤲</div>
           <h1>Make Dua</h1>
           <p className="subtitle">
             {isAtHolySite
               ? `📍 ${locationState.currentSite.name} • ${locationState.currentSite.city}`
               : 'Make dua for your Muslim brothers & sisters'}
           </p>
+          <p className="bismillah-watermark">بِسْمِ ٱللَّهِ</p>
         </div>
       </div>
       <div className="header-accent" />
@@ -350,8 +355,8 @@ export default function MakeDuaPage({ locationState }) {
                 <button className="debug-btn clear" onClick={locationState.clearSimulation}>✕ Clear</button>
               </div>
             </div>
-            <div className="islamic-divider" style={{ margin: '16px 0 0' }}>
-              <div className="line"></div><div className="diamond">◆</div><div className="line"></div>
+            <div className="islamic-divider-ornate" style={{ margin: '16px 0 0' }}>
+              <div className="line"></div><div className="ornament">۞</div><div className="line"></div>
             </div>
             <div className="section-header">
               <span className="section-title">All Dua Requests</span>
@@ -389,8 +394,8 @@ export default function MakeDuaPage({ locationState }) {
                 <button className="debug-btn clear" onClick={locationState.clearSimulation}>✕ Clear</button>
               </div>
             </div>
-            <div className="islamic-divider" style={{ margin: '16px 0 0' }}>
-              <div className="line"></div><div className="diamond">◆</div><div className="line"></div>
+            <div className="islamic-divider-ornate" style={{ margin: '16px 0 0' }}>
+              <div className="line"></div><div className="ornament">۞</div><div className="line"></div>
             </div>
             <div className="section-header">
               <span className="section-title">Open to All</span>

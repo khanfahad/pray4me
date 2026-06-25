@@ -40,7 +40,7 @@ export default function DuaCard({
   const hasBothTypes = holyCount > 0 && otherCount > 0;
 
   return (
-    <div className={`card dua-card fade-in ${isDuaJustMade ? 'celebrated' : ''}`}>
+    <div className={`card card-spiritual dua-card fade-in ${isDuaJustMade ? 'celebrated glow-gold' : ''}`}>
 
       {/* Holy-site-only badge */}
       {request.holyOnly && (

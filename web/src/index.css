@@ -18,7 +18,8 @@
   --red: #C62828;
   --blue-fb: #1877F2;
 
-  --font-serif: Georgia, 'Times New Roman', serif;
+  --font-serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-arabic: 'Amiri', Georgia, 'Times New Roman', serif;
   --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 
   --radius: 16px;
@@ -60,8 +61,9 @@ body {
 .heading { font-family: var(--font-serif); font-weight: 700; color: var(--charcoal); }
 .subheading { font-family: var(--font-serif); font-weight: 600; }
 .arabic-text {
-  font-size: 1.3rem; line-height: 2.2; direction: rtl; text-align: right;
-  font-family: var(--font-serif); color: var(--green-primary);
+  font-size: 1.4rem; line-height: 2.4; direction: rtl; text-align: right;
+  font-family: var(--font-arabic); color: var(--green-primary);
+  letter-spacing: 0.02em;
 }
 .caption { font-size: 0.78rem; color: var(--soft-gray); }
 
@@ -96,8 +98,18 @@ body {
 .card {
   background: var(--white); padding: 18px; border-radius: var(--radius);
   box-shadow: var(--shadow); border: 1px solid rgba(232,228,220,0.6);
+  position: relative;
 }
 .card-elevated { box-shadow: var(--shadow-md); }
+.card-spiritual {
+  background: linear-gradient(135deg, #ffffff 0%, #fdfbf5 100%);
+  border: 1px solid rgba(200,169,81,0.15);
+}
+.card-spiritual::before {
+  content: '﷽'; position: absolute; top: 8px; right: 12px;
+  font-family: var(--font-arabic); font-size: 0.7rem;
+  color: rgba(200,169,81,0.12); pointer-events: none;
+}
 
 /* Form elements */
 textarea, input[type="text"], input[type="email"] {
@@ -128,37 +140,64 @@ textarea:focus, input:focus {
 
 /* Islamic header */
 .islamic-header {
-  background: linear-gradient(150deg, var(--green-dark) 0%, var(--green-primary) 60%, var(--green-mid) 100%);
-  color: white; padding: 44px 20px 32px; text-align: center;
+  background: linear-gradient(160deg, #061a08 0%, var(--green-dark) 35%, var(--green-primary) 70%, var(--green-mid) 100%);
+  color: white; padding: 52px 20px 56px; text-align: center;
   position: relative; overflow: hidden;
 }
 .islamic-header h1 {
   font-family: var(--font-serif); color: white;
-  font-size: 1.9rem; margin: 8px 0 4px; letter-spacing: -0.01em;
+  font-size: 2rem; margin: 8px 0 4px; letter-spacing: -0.01em;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.3);
 }
-.islamic-header .subtitle { color: rgba(255,255,255,0.78); font-size: 0.88rem; }
-.islamic-header .icon { color: var(--gold); font-size: 2.2rem; margin-bottom: 6px; }
+.islamic-header .subtitle {
+  color: rgba(255,255,255,0.78); font-size: 0.88rem;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.2);
+}
+.islamic-header .icon { color: var(--gold); font-size: 2.2rem; margin-bottom: 6px; filter: drop-shadow(0 2px 8px rgba(200,169,81,0.5)); }
+.islamic-header .bismillah-watermark {
+  font-family: var(--font-arabic); font-size: 1.2rem; color: rgba(200,169,81,0.25);
+  margin-top: 12px; letter-spacing: 0.05em;
+}
 .islamic-header::before {
   content: ''; position: absolute; inset: 0;
   background:
-    radial-gradient(circle at 20% 50%, rgba(200,169,81,0.08) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(255,255,255,0.05) 0%, transparent 50%),
-    repeating-conic-gradient(rgba(255,255,255,0.025) 0% 25%, transparent 0% 50%) 0 0 / 36px 36px;
+    radial-gradient(ellipse at 50% 0%, rgba(200,169,81,0.12) 0%, transparent 60%),
+    radial-gradient(circle at 20% 70%, rgba(200,169,81,0.06) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255,255,255,0.04) 0%, transparent 50%);
+}
+.islamic-header::after {
+  content: ''; position: absolute; inset: 0;
+  background:
+    repeating-conic-gradient(rgba(255,255,255,0.018) 0% 25%, transparent 0% 50%) 0 0 / 32px 32px;
+  mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.5) 30%, rgba(0,0,0,0.5) 70%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.5) 30%, rgba(0,0,0,0.5) 70%, transparent 100%);
 }
 .islamic-header .header-content { position: relative; z-index: 1; }
 
 /* Gold accent bar below header */
 .header-accent {
-  height: 3px;
-  background: linear-gradient(90deg, transparent, var(--gold), var(--gold-dark), var(--gold), transparent);
+  height: 4px;
+  background: linear-gradient(90deg, transparent 5%, var(--gold) 30%, #E8D48B 50%, var(--gold) 70%, transparent 95%);
+  box-shadow: 0 1px 8px rgba(200,169,81,0.4);
 }
 
 /* Divider */
 .islamic-divider {
-  display: flex; align-items: center; gap: 10px; padding: 6px 0;
+  display: flex; align-items: center; gap: 8px; padding: 8px 0;
 }
-.islamic-divider .line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(200,169,81,0.4), transparent); }
-.islamic-divider .diamond { color: var(--gold); font-size: 7px; }
+.islamic-divider .line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(200,169,81,0.35), transparent); }
+.islamic-divider .diamond {
+  color: var(--gold); font-size: 8px;
+  text-shadow: 0 0 6px rgba(200,169,81,0.3);
+}
+.islamic-divider-ornate {
+  display: flex; align-items: center; gap: 6px; padding: 12px 0;
+}
+.islamic-divider-ornate .line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(200,169,81,0.3), transparent); }
+.islamic-divider-ornate .ornament {
+  font-family: var(--font-arabic); font-size: 1.1rem; color: rgba(200,169,81,0.4);
+  line-height: 1;
+}
 
 /* Tab bar */
 .tab-bar {
@@ -316,8 +355,9 @@ textarea:focus, input:focus {
 .dua-card-count-bubble .count-label { font-size: 0.58rem; color: var(--soft-gray); text-transform: uppercase; letter-spacing: 0.04em; margin-top: 1px; }
 
 .dua-card-text {
-  font-size: 0.88rem; color: var(--charcoal-light); line-height: 1.65;
+  font-size: 0.88rem; color: var(--charcoal-light); line-height: 1.7;
   margin-bottom: 10px; font-style: italic;
+  font-family: var(--font-serif);
 }
 .dua-card-text.no-text { font-style: normal; color: var(--soft-gray); }
 
@@ -359,54 +399,77 @@ textarea:focus, input:focus {
 /* Login page */
 .login-page { min-height: 100vh; display: flex; flex-direction: column; background: var(--warm-white); }
 .login-hero {
-  flex: 0 0 48%; display: flex; flex-direction: column;
+  flex: 0 0 52%; display: flex; flex-direction: column;
   align-items: center; justify-content: center;
-  background: linear-gradient(150deg, var(--green-dark) 0%, var(--green-primary) 60%, var(--green-mid) 100%);
+  background: linear-gradient(170deg, #030d04 0%, #061a08 20%, var(--green-dark) 50%, var(--green-primary) 85%, var(--green-mid) 100%);
   position: relative; overflow: hidden; color: white; padding: 40px 24px;
 }
 .login-hero::before {
   content: ''; position: absolute; inset: 0;
   background:
-    radial-gradient(circle at 30% 60%, rgba(200,169,81,0.1) 0%, transparent 55%),
-    radial-gradient(circle at 75% 25%, rgba(255,255,255,0.06) 0%, transparent 45%),
-    repeating-conic-gradient(rgba(255,255,255,0.025) 0% 25%, transparent 0% 50%) 0 0 / 36px 36px;
+    radial-gradient(ellipse at 50% 20%, rgba(200,169,81,0.15) 0%, transparent 50%),
+    radial-gradient(circle at 20% 80%, rgba(200,169,81,0.08) 0%, transparent 55%),
+    radial-gradient(circle at 80% 30%, rgba(255,255,255,0.04) 0%, transparent 45%);
 }
-.login-hero-content { position: relative; z-index: 1; text-align: center; }
+.login-hero::after {
+  content: ''; position: absolute; inset: 0;
+  background: repeating-conic-gradient(rgba(255,255,255,0.015) 0% 25%, transparent 0% 50%) 0 0 / 28px 28px;
+  mask-image: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0.6) 0%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0.6) 0%, transparent 70%);
+}
+.login-hero-content { position: relative; z-index: 2; text-align: center; }
 .login-moon {
   font-size: 3.5rem; line-height: 1; display: block; margin-bottom: 10px;
   filter: drop-shadow(0 4px 12px rgba(200,169,81,0.5));
 }
 .login-hero h1 {
-  font-family: var(--font-serif); font-size: 2.6rem; color: white;
+  font-family: var(--font-serif); font-size: 2.8rem; color: white;
   margin: 0 0 8px; letter-spacing: -0.02em;
+  text-shadow: 0 3px 16px rgba(0,0,0,0.4);
 }
 .login-hero .tagline {
-  color: rgba(255,255,255,0.82); font-size: 0.95rem; line-height: 1.5;
+  color: rgba(255,255,255,0.82); font-size: 0.95rem; line-height: 1.6;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.3);
 }
 .login-hero .bismillah {
-  font-family: var(--font-serif); color: var(--gold); font-size: 1.1rem;
-  margin-top: 16px; opacity: 0.9;
+  font-family: var(--font-arabic); color: var(--gold); font-size: 1.25rem;
+  margin-top: 18px; opacity: 0.85;
+  text-shadow: 0 1px 8px rgba(200,169,81,0.4);
+  letter-spacing: 0.03em;
 }
 .login-body {
   flex: 1; display: flex; flex-direction: column; align-items: center;
   justify-content: center; gap: 12px; padding: 32px 24px;
+  position: relative;
+}
+.login-body::before {
+  content: 'بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ';
+  position: absolute; top: 20px; left: 50%; transform: translateX(-50%);
+  font-family: var(--font-arabic); font-size: 0.85rem; color: rgba(200,169,81,0.2);
+  white-space: nowrap; pointer-events: none;
 }
 .login-body .sign-in-label {
-  font-family: var(--font-serif); font-size: 1rem; color: var(--charcoal); font-weight: 600; margin-bottom: 4px;
+  font-family: var(--font-serif); font-size: 1.05rem; color: var(--charcoal); font-weight: 600; margin-bottom: 4px;
 }
 .login-body .btn { max-width: 380px; }
 
 /* Profile header */
 .profile-header {
-  background: linear-gradient(150deg, var(--green-dark) 0%, var(--green-primary) 60%, var(--green-mid) 100%);
-  color: white; padding: 52px 20px 32px; text-align: center;
+  background: linear-gradient(160deg, #030d04 0%, var(--green-dark) 40%, var(--green-primary) 70%, var(--green-mid) 100%);
+  color: white; padding: 52px 20px 56px; text-align: center;
   position: relative; overflow: hidden;
 }
 .profile-header::before {
   content: ''; position: absolute; inset: 0;
   background:
-    radial-gradient(circle at 50% 80%, rgba(200,169,81,0.1) 0%, transparent 60%),
-    repeating-conic-gradient(rgba(255,255,255,0.025) 0% 25%, transparent 0% 50%) 0 0 / 36px 36px;
+    radial-gradient(ellipse at 50% 30%, rgba(200,169,81,0.12) 0%, transparent 55%),
+    radial-gradient(circle at 50% 80%, rgba(200,169,81,0.06) 0%, transparent 60%);
+}
+.profile-header::after {
+  content: ''; position: absolute; inset: 0;
+  background: repeating-conic-gradient(rgba(255,255,255,0.015) 0% 25%, transparent 0% 50%) 0 0 / 28px 28px;
+  mask-image: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0.5) 0%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0.5) 0%, transparent 70%);
 }
 .profile-header-content { position: relative; z-index: 1; }
 .profile-avatar {
@@ -714,11 +777,84 @@ textarea:focus, input:focus {
   padding: 32px; color: rgba(255,255,255,0.7); font-size: 0.9rem; line-height: 1.6;
 }
 
+/* ── Spiritual glow effects ─────────────── */
+@keyframes goldGlow {
+  0%, 100% { box-shadow: 0 0 8px rgba(200,169,81,0.15); }
+  50% { box-shadow: 0 0 20px rgba(200,169,81,0.3), 0 0 40px rgba(200,169,81,0.1); }
+}
+.glow-gold { animation: goldGlow 3s ease-in-out infinite; }
+
+@keyframes floatUp {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+  100% { transform: translateY(0); }
+}
+.float { animation: floatUp 4s ease-in-out infinite; }
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+.twinkle { animation: twinkle 2s ease-in-out infinite; }
+
+/* Ornate section title */
+.section-title-ornate {
+  display: flex; align-items: center; gap: 10px; margin: 20px 0 14px;
+}
+.section-title-ornate .section-title {
+  font-family: var(--font-serif); font-weight: 700; font-size: 1.1rem;
+  color: var(--charcoal); white-space: nowrap;
+}
+.section-title-ornate .ornate-line {
+  flex: 1; height: 1px;
+  background: linear-gradient(90deg, rgba(200,169,81,0.3), transparent);
+}
+.section-title-ornate .ornate-line.left {
+  background: linear-gradient(270deg, rgba(200,169,81,0.3), transparent);
+}
+
+/* Spiritual stat card */
+.stat-card-spiritual {
+  text-align: center; padding: 20px 8px;
+  background: linear-gradient(135deg, #ffffff 0%, #fdfbf5 100%);
+  border: 1px solid rgba(200,169,81,0.12);
+}
+.stat-card-spiritual .stat-value {
+  font-family: var(--font-serif); font-size: 1.6rem; font-weight: 800;
+  color: var(--green-primary); line-height: 1;
+  text-shadow: 0 1px 2px rgba(27,94,32,0.1);
+}
+
+/* Category card enhanced */
+.category-card {
+  background: linear-gradient(135deg, #ffffff 0%, #fdfbf5 100%);
+  border: 1.5px solid var(--border);
+}
+.category-card:hover {
+  border-color: rgba(200,169,81,0.4);
+  background: linear-gradient(135deg, #fdfbf5 0%, var(--gold-lighter) 100%);
+}
+
+/* Suggested dua enhanced */
+.suggested-dua .arabic-text {
+  font-family: var(--font-arabic);
+  color: var(--green-primary);
+  font-size: 1.3rem;
+}
+.suggested-dua .source {
+  font-family: var(--font-serif);
+}
+
+/* Enhanced empty state */
+.empty-state .empty-icon { filter: drop-shadow(0 2px 4px rgba(200,169,81,0.2)); opacity: 0.6; }
+
 /* Mobile responsive */
 @media (max-width: 480px) {
   .container { padding: 0 12px; }
   .islamic-header h1 { font-size: 1.6rem; }
-  .login-hero h1 { font-size: 2rem; }
+  .islamic-header { padding: 44px 16px 48px; }
+  .login-hero h1 { font-size: 2.2rem; }
+  .login-hero { padding: 32px 20px; }
   .category-grid { gap: 8px; }
   .category-card { min-height: 88px; padding: 14px 6px; }
 }

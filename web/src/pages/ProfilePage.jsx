@@ -4,6 +4,8 @@ import { FirebaseService } from '../services/firebase';
 import { getCategoryById } from '../services/data';
 import DonationModal from '../components/DonationModal';
 import PilgrimModal from '../components/PilgrimModal';
+import MosqueSilhouette from '../components/MosqueSilhouette';
+import StarfieldBackground from '../components/StarfieldBackground';
 
 export default function ProfilePage() {
   const { user, logOut, refreshUser } = useAuth();
@@ -36,6 +38,8 @@ export default function ProfilePage() {
   return (
     <div className="page-content">
       <div className="profile-header">
+        <StarfieldBackground starCount={25} />
+        <MosqueSilhouette color="rgba(200,169,81,0.08)" />
         <div className="profile-header-content">
           <div className="profile-avatar">{initial}</div>
           <div className="profile-name">{user?.displayName || 'Muslim'}</div>
@@ -119,7 +123,7 @@ export default function ProfilePage() {
           </div>
         </button>
 
-        <div className="islamic-divider"><div className="line"></div><div className="diamond">◆</div><div className="line"></div></div>
+        <div className="islamic-divider-ornate"><div className="line"></div><div className="ornament">۞</div><div className="line"></div></div>
 
         <div className="section-header">
           <span className="section-title">My Dua Requests</span>
@@ -161,7 +165,7 @@ export default function ProfilePage() {
           })
         )}
 
-        <div className="islamic-divider" style={{ margin: '20px 0' }}><div className="line"></div><div className="diamond">◆</div><div className="line"></div></div>
+        <div className="islamic-divider-ornate" style={{ margin: '20px 0' }}><div className="line"></div><div className="ornament">۞</div><div className="line"></div></div>
 
         <div className="card" style={{ padding: 0, overflow: 'hidden', marginBottom: 20 }}>
           <button className="settings-row" onClick={() => setShowPilgrim(true)}>
