@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { FirebaseService } from '../services/firebase';
 import { DUA_CATEGORIES } from '../services/data';
+import HadithBanner from '../components/HadithBanner';
 import MosqueSilhouette from '../components/MosqueSilhouette';
 import StarfieldBackground from '../components/StarfieldBackground';
 import toast from 'react-hot-toast';
@@ -76,6 +77,7 @@ export default function RequestDuaPage() {
         </div>
       </div>
       <div className="header-accent" />
+      <HadithBanner />
 
       <div className="container" style={{ marginTop: 20 }}>
         {!selectedCategory ? (

@@ -1,4 +1,5 @@
 import { useAuth } from '../contexts/AuthContext';
+import HadithBanner from '../components/HadithBanner';
 import Pray4MeLogo from '../components/Pray4MeLogo';
 import MosqueSilhouette from '../components/MosqueSilhouette';
 import StarfieldBackground from '../components/StarfieldBackground';
@@ -23,6 +24,7 @@ export default function LoginPage() {
       </div>
 
       <div className="header-accent" />
+      <HadithBanner />
 
       <div className="login-body">
         <p className="sign-in-label">Sign in to continue</p>

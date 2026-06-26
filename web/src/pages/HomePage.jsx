@@ -3,6 +3,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { FirebaseService } from '../services/firebase';
 import { DUA_CATEGORIES, HOLY_SITES } from '../services/data';
 import DuaCard from '../components/DuaCard';
+import HadithBanner from '../components/HadithBanner';
 import MosqueSilhouette from '../components/MosqueSilhouette';
 import StarfieldBackground from '../components/StarfieldBackground';
 
@@ -73,6 +74,7 @@ export default function HomePage({ locationState }) {
         </div>
       </div>
       <div className="header-accent" />
+      <HadithBanner />
 
       <div className="container" style={{ marginTop: 20 }}>
         {locationState.isAtHolySite && locationState.currentSite && (

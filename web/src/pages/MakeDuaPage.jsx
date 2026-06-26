@@ -4,6 +4,7 @@ import { FirebaseService } from '../services/firebase';
 import { DUA_CATEGORIES, HOLY_SITES, SUNNAH_DUAS } from '../services/data';
 import DuaCard from '../components/DuaCard';
 import DuaMode from '../components/DuaMode';
+import HadithBanner from '../components/HadithBanner';
 import MosqueSilhouette from '../components/MosqueSilhouette';
 import StarfieldBackground from '../components/StarfieldBackground';
 import toast from 'react-hot-toast';
@@ -57,7 +58,7 @@ function SunnahDuaCard({ dua, made, onMade }) {
   );
 }
 
-function SunnahDuasSection({ onEnterDuaMode }) {
+function SunnahDuasSection() {
   const [expanded, setExpanded] = useState(false);
   const [madeDuas, setMadeDuas] = useState(new Set());
 
@@ -105,15 +106,6 @@ function SunnahDuasSection({ onEnterDuaMode }) {
 
       {expanded && (
         <div className="fade-in">
-          <button
-            className="btn-dua-mode"
-            onClick={onEnterDuaMode}
-            style={{ marginBottom: 14, background: 'linear-gradient(135deg, #7B5E1A, #C8A951)' }}
-          >
-            <span>✨</span>
-            <span>Start Sunnah Dua Mode</span>
-            <span className="btn-dua-mode-count">{SUNNAH_DUAS.length}</span>
-          </button>
           {SUNNAH_DUAS.map(dua => (
             <SunnahDuaCard
               key={dua.id}
@@ -204,7 +196,6 @@ export default function MakeDuaPage({ locationState }) {
   const [activeCategory, setActiveCategory] = useState('all');
   const [shuffled, setShuffled] = useState([]);
   const [duaModeActive, setDuaModeActive] = useState(false);
-  const [duaModeSunnahOnly, setDuaModeSunnahOnly] = useState(false);
 
   useEffect(() => {
     const unsub = FirebaseService.listenToActiveRequests((data) => {
@@ -244,13 +235,7 @@ export default function MakeDuaPage({ locationState }) {
     }
   };
 
-  const enterSunnahDuaMode = () => {
-    setDuaModeSunnahOnly(true);
-    setDuaModeActive(true);
-  };
-
-  const enterFullDuaMode = () => {
-    setDuaModeSunnahOnly(false);
+  const enterDuaMode = () => {
     setDuaModeActive(true);
   };
 
@@ -271,11 +256,12 @@ export default function MakeDuaPage({ locationState }) {
         </div>
       </div>
       <div className="header-accent" />
+      <HadithBanner />
 
       {/* Prominent Dua Mode entry — always visible */}
       <div className="container" style={{ marginTop: 18, marginBottom: 0 }}>
         <button
-          onClick={enterFullDuaMode}
+          onClick={enterDuaMode}
           style={{
             width: '100%', border: 'none', cursor: 'pointer', padding: 0,
             background: 'none', marginBottom: 10,
@@ -300,37 +286,7 @@ export default function MakeDuaPage({ locationState }) {
               background: 'rgba(255,255,255,0.18)', borderRadius: 20,
               padding: '4px 12px', color: 'white', fontSize: '0.78rem', fontWeight: 700,
             }}>
-              {displayList.length + SUNNAH_DUAS.length} duas
-            </div>
-          </div>
-        </button>
-        <button
-          onClick={enterSunnahDuaMode}
-          style={{
-            width: '100%', border: 'none', cursor: 'pointer', padding: 0,
-            background: 'none', marginBottom: 4,
-          }}
-        >
-          <div style={{
-            background: 'linear-gradient(135deg, #7B5E1A, #C8A951)',
-            borderRadius: 'var(--radius)', padding: '14px 20px',
-            display: 'flex', alignItems: 'center', gap: 14,
-            boxShadow: '0 3px 12px rgba(200,169,81,0.3)',
-          }}>
-            <span style={{ fontSize: '1.6rem', flexShrink: 0 }}>📖</span>
-            <div style={{ flex: 1, textAlign: 'left' }}>
-              <div style={{ color: 'white', fontWeight: 700, fontSize: '0.92rem', fontFamily: 'var(--font-serif)', marginBottom: 2 }}>
-                Sunnah Duas Only
-              </div>
-              <div style={{ color: 'rgba(255,255,255,0.75)', fontSize: '0.76rem' }}>
-                Duas from Quran & Sunnah — no login needed
-              </div>
-            </div>
-            <div style={{
-              background: 'rgba(255,255,255,0.2)', borderRadius: 20,
-              padding: '4px 12px', color: 'white', fontSize: '0.78rem', fontWeight: 700,
-            }}>
-              {SUNNAH_DUAS.length} duas
+              {displayList.length} duas
             </div>
           </div>
         </button>
@@ -371,9 +327,9 @@ export default function MakeDuaPage({ locationState }) {
             sortMode={sortMode} setSortMode={setSortMode}
             activeCategory={activeCategory} setActiveCategory={setActiveCategory}
             onReshuffle={() => setShuffled(shuffleArray(requests))}
-            onEnterDuaMode={enterFullDuaMode}
+            onEnterDuaMode={enterDuaMode}
           />
-          <SunnahDuasSection onEnterDuaMode={enterSunnahDuaMode} />
+          <SunnahDuasSection />
         </>
       ) : (
         <div style={{ marginTop: 18 }}>
@@ -410,7 +366,7 @@ export default function MakeDuaPage({ locationState }) {
             sortMode={sortMode} setSortMode={setSortMode}
             activeCategory={activeCategory} setActiveCategory={setActiveCategory}
             onReshuffle={() => setShuffled(shuffleArray(requests))}
-            onEnterDuaMode={enterFullDuaMode}
+            onEnterDuaMode={enterDuaMode}
           />
           <div className="container" style={{ marginTop: 8 }}>
             <div className="islamic-divider" style={{ margin: '8px 0 16px' }}>
@@ -437,14 +393,13 @@ export default function MakeDuaPage({ locationState }) {
               ))}
             </div>
           </div>
-          <SunnahDuasSection onEnterDuaMode={enterSunnahDuaMode} />
+          <SunnahDuasSection />
         </div>
       )}
 
       {duaModeActive && (
         <DuaMode
-          requests={duaModeSunnahOnly ? [] : displayList}
-          sunnahDuas={SUNNAH_DUAS}
+          requests={displayList}
           isAtHolySite={isAtHolySite}
           onMakeDua={handleMakeDua}
           onClose={() => setDuaModeActive(false)}

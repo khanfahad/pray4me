@@ -181,6 +181,31 @@ textarea:focus, input:focus {
   box-shadow: 0 1px 8px rgba(200,169,81,0.4);
 }
 
+.hadith-banner {
+  background: linear-gradient(135deg, #F9F3E3, #FFF8E7);
+  border-bottom: 1px solid rgba(200,169,81,0.25);
+  padding: 10px 16px;
+  text-align: center;
+}
+.hadith-banner .hadith-arabic {
+  font-family: var(--font-arabic);
+  font-size: 1.15rem;
+  color: var(--gold-dark);
+  line-height: 1.8;
+  margin-bottom: 2px;
+}
+.hadith-banner .hadith-english {
+  font-family: var(--font-serif);
+  font-size: 0.78rem;
+  color: var(--charcoal-light);
+  font-style: italic;
+}
+.hadith-banner .hadith-source {
+  font-size: 0.68rem;
+  color: var(--soft-gray);
+  margin-top: 2px;
+}
+
 /* Divider */
 .islamic-divider {
   display: flex; align-items: center; gap: 8px; padding: 8px 0;

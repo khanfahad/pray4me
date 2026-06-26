@@ -4,6 +4,7 @@ import { FirebaseService } from '../services/firebase';
 import { getCategoryById } from '../services/data';
 import DonationModal from '../components/DonationModal';
 import PilgrimModal from '../components/PilgrimModal';
+import HadithBanner from '../components/HadithBanner';
 import MosqueSilhouette from '../components/MosqueSilhouette';
 import StarfieldBackground from '../components/StarfieldBackground';
 
@@ -50,6 +51,7 @@ export default function ProfilePage() {
         </div>
       </div>
       <div className="header-accent" />
+      <HadithBanner />
 
       <div className="container" style={{ marginTop: 20 }}>
         {/* Stats */}
