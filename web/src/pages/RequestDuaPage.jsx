@@ -3,8 +3,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { FirebaseService } from '../services/firebase';
 import { DUA_CATEGORIES } from '../services/data';
 import HadithBanner from '../components/HadithBanner';
-import MosqueSilhouette from '../components/MosqueSilhouette';
-import StarfieldBackground from '../components/StarfieldBackground';
+import Pray4MeLogo from '../components/Pray4MeLogo';
 import toast from 'react-hot-toast';
 
 const MAX_CUSTOM_LENGTH = 200;
@@ -67,13 +66,9 @@ export default function RequestDuaPage() {
   return (
     <div className="page-content">
       <div className="islamic-header">
-        <StarfieldBackground starCount={30} />
-        <MosqueSilhouette />
         <div className="header-content">
-          <div className="icon float">🤲</div>
-          <h1>Request a Dua</h1>
-          <p className="subtitle">Ask the Ummah to pray for you</p>
-          <p className="bismillah-watermark">بِسْمِ ٱللَّهِ</p>
+          <Pray4MeLogo size={28} showBg={false} />
+          <h1>Dua' 4 Me</h1>
         </div>
       </div>
       <div className="header-accent" />

@@ -5,8 +5,7 @@ import { DUA_CATEGORIES, HOLY_SITES, SUNNAH_DUAS } from '../services/data';
 import DuaCard from '../components/DuaCard';
 import DuaMode from '../components/DuaMode';
 import HadithBanner from '../components/HadithBanner';
-import MosqueSilhouette from '../components/MosqueSilhouette';
-import StarfieldBackground from '../components/StarfieldBackground';
+import Pray4MeLogo from '../components/Pray4MeLogo';
 import toast from 'react-hot-toast';
 
 const SORT_OPTIONS = [
@@ -242,17 +241,9 @@ export default function MakeDuaPage({ locationState }) {
   return (
     <div className="page-content">
       <div className="islamic-header">
-        <StarfieldBackground starCount={30} />
-        <MosqueSilhouette />
         <div className="header-content">
-          <div className="icon float">🤲</div>
-          <h1>Make Dua</h1>
-          <p className="subtitle">
-            {isAtHolySite
-              ? `📍 ${locationState.currentSite.name} • ${locationState.currentSite.city}`
-              : 'Make dua for your Muslim brothers & sisters'}
-          </p>
-          <p className="bismillah-watermark">بِسْمِ ٱللَّهِ</p>
+          <Pray4MeLogo size={28} showBg={false} />
+          <h1>Dua' 4 Me</h1>
         </div>
       </div>
       <div className="header-accent" />

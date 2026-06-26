@@ -141,38 +141,20 @@ textarea:focus, input:focus {
 /* Islamic header */
 .islamic-header {
   background: linear-gradient(160deg, #061a08 0%, var(--green-dark) 35%, var(--green-primary) 70%, var(--green-mid) 100%);
-  color: white; padding: 52px 20px 56px; text-align: center;
+  color: white; padding: 14px 16px; text-align: center;
   position: relative; overflow: hidden;
+}
+.islamic-header .header-content {
+  position: relative; z-index: 1;
+  display: flex; align-items: center; gap: 10px; justify-content: center;
 }
 .islamic-header h1 {
   font-family: var(--font-serif); color: white;
-  font-size: 2rem; margin: 8px 0 4px; letter-spacing: -0.01em;
-  text-shadow: 0 2px 12px rgba(0,0,0,0.3);
+  font-size: 1.15rem; margin: 0; letter-spacing: -0.01em;
 }
-.islamic-header .subtitle {
-  color: rgba(255,255,255,0.78); font-size: 0.88rem;
-  text-shadow: 0 1px 4px rgba(0,0,0,0.2);
-}
-.islamic-header .icon { color: var(--gold); font-size: 2.2rem; margin-bottom: 6px; filter: drop-shadow(0 2px 8px rgba(200,169,81,0.5)); }
-.islamic-header .bismillah-watermark {
-  font-family: var(--font-arabic); font-size: 1.2rem; color: rgba(200,169,81,0.25);
-  margin-top: 12px; letter-spacing: 0.05em;
-}
-.islamic-header::before {
-  content: ''; position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse at 50% 0%, rgba(200,169,81,0.12) 0%, transparent 60%),
-    radial-gradient(circle at 20% 70%, rgba(200,169,81,0.06) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(255,255,255,0.04) 0%, transparent 50%);
-}
-.islamic-header::after {
-  content: ''; position: absolute; inset: 0;
-  background:
-    repeating-conic-gradient(rgba(255,255,255,0.018) 0% 25%, transparent 0% 50%) 0 0 / 32px 32px;
-  mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.5) 30%, rgba(0,0,0,0.5) 70%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.5) 30%, rgba(0,0,0,0.5) 70%, transparent 100%);
-}
-.islamic-header .header-content { position: relative; z-index: 1; }
+.islamic-header .subtitle,
+.islamic-header .bismillah-watermark,
+.islamic-header .icon { display: none; }
 
 /* Gold accent bar below header */
 .header-accent {
@@ -424,10 +406,10 @@ textarea:focus, input:focus {
 /* Login page */
 .login-page { min-height: 100vh; display: flex; flex-direction: column; background: var(--warm-white); }
 .login-hero {
-  flex: 0 0 52%; display: flex; flex-direction: column;
+  flex: 0 0 auto; display: flex; flex-direction: column;
   align-items: center; justify-content: center;
   background: linear-gradient(170deg, #030d04 0%, #061a08 20%, var(--green-dark) 50%, var(--green-primary) 85%, var(--green-mid) 100%);
-  position: relative; overflow: hidden; color: white; padding: 40px 24px;
+  position: relative; overflow: hidden; color: white; padding: 14px 16px;
 }
 .login-hero::before {
   content: ''; position: absolute; inset: 0;
@@ -442,15 +424,14 @@ textarea:focus, input:focus {
   mask-image: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0.6) 0%, transparent 70%);
   -webkit-mask-image: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0.6) 0%, transparent 70%);
 }
-.login-hero-content { position: relative; z-index: 2; text-align: center; }
+.login-hero-content { position: relative; z-index: 2; display: flex; align-items: center; gap: 10px; justify-content: center; }
 .login-moon {
   font-size: 3.5rem; line-height: 1; display: block; margin-bottom: 10px;
   filter: drop-shadow(0 4px 12px rgba(200,169,81,0.5));
 }
 .login-hero h1 {
-  font-family: var(--font-serif); font-size: 2.8rem; color: white;
-  margin: 0 0 8px; letter-spacing: -0.02em;
-  text-shadow: 0 3px 16px rgba(0,0,0,0.4);
+  font-family: var(--font-serif); font-size: 1.15rem; color: white;
+  margin: 0; letter-spacing: -0.02em;
 }
 .login-hero .tagline {
   color: rgba(255,255,255,0.82); font-size: 0.95rem; line-height: 1.6;
@@ -481,7 +462,7 @@ textarea:focus, input:focus {
 /* Profile header */
 .profile-header {
   background: linear-gradient(160deg, #030d04 0%, var(--green-dark) 40%, var(--green-primary) 70%, var(--green-mid) 100%);
-  color: white; padding: 52px 20px 56px; text-align: center;
+  color: white; padding: 14px 16px; text-align: center;
   position: relative; overflow: hidden;
 }
 .profile-header::before {
@@ -876,10 +857,8 @@ textarea:focus, input:focus {
 /* Mobile responsive */
 @media (max-width: 480px) {
   .container { padding: 0 12px; }
-  .islamic-header h1 { font-size: 1.6rem; }
-  .islamic-header { padding: 44px 16px 48px; }
-  .login-hero h1 { font-size: 2.2rem; }
-  .login-hero { padding: 32px 20px; }
+  .islamic-header h1 { font-size: 1rem; }
+  .login-hero h1 { font-size: 1rem; }
   .category-grid { gap: 8px; }
   .category-card { min-height: 88px; padding: 14px 6px; }
 }

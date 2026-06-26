@@ -5,8 +5,7 @@ import { getCategoryById } from '../services/data';
 import DonationModal from '../components/DonationModal';
 import PilgrimModal from '../components/PilgrimModal';
 import HadithBanner from '../components/HadithBanner';
-import MosqueSilhouette from '../components/MosqueSilhouette';
-import StarfieldBackground from '../components/StarfieldBackground';
+import Pray4MeLogo from '../components/Pray4MeLogo';
 
 export default function ProfilePage() {
   const { user, logOut, refreshUser } = useAuth();
@@ -38,11 +37,18 @@ export default function ProfilePage() {
 
   return (
     <div className="page-content">
-      <div className="profile-header">
-        <StarfieldBackground starCount={25} />
-        <MosqueSilhouette color="rgba(200,169,81,0.08)" />
-        <div className="profile-header-content">
-          <div className="profile-avatar">{initial}</div>
+      <div className="islamic-header">
+        <div className="header-content">
+          <Pray4MeLogo size={28} showBg={false} />
+          <h1>Dua' 4 Me</h1>
+        </div>
+      </div>
+      <div className="header-accent" />
+      <HadithBanner />
+
+      <div className="container" style={{ marginTop: 16, marginBottom: 0 }}>
+        <div style={{ textAlign: 'center' }}>
+          <div className="profile-avatar" style={{ margin: '0 auto 8px' }}>{initial}</div>
           <div className="profile-name">{user?.displayName || 'Muslim'}</div>
           <div className="profile-email">{user?.email}</div>
           {user?.joinedAt && (
@@ -50,8 +56,6 @@ export default function ProfilePage() {
           )}
         </div>
       </div>
-      <div className="header-accent" />
-      <HadithBanner />
 
       <div className="container" style={{ marginTop: 20 }}>
         {/* Stats */}

@@ -40,12 +40,6 @@ export default function DuaMode({ requests, isAtHolySite, onMakeDua, onClose }) 
       setMade(newMade);
       if (newMade.size === requests.length) {
         setTimeout(() => setDone(true), 1000);
-      } else {
-        setTimeout(() => {
-          if (index < requests.length - 1) setIndex(i => i + 1);
-          setConfirming(false);
-        }, 1200);
-        return;
       }
     } catch {
       // error handled in parent

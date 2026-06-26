@@ -4,8 +4,7 @@ import { FirebaseService } from '../services/firebase';
 import { DUA_CATEGORIES, HOLY_SITES } from '../services/data';
 import DuaCard from '../components/DuaCard';
 import HadithBanner from '../components/HadithBanner';
-import MosqueSilhouette from '../components/MosqueSilhouette';
-import StarfieldBackground from '../components/StarfieldBackground';
+import Pray4MeLogo from '../components/Pray4MeLogo';
 
 const SORT_OPTIONS = [
   { id: 'shuffle', label: 'Shuffle', icon: '🔀' },
@@ -64,13 +63,9 @@ export default function HomePage({ locationState }) {
   return (
     <div className="page-content">
       <div className="islamic-header">
-        <StarfieldBackground starCount={30} />
-        <MosqueSilhouette />
         <div className="header-content">
-          <div className="icon float">🌙</div>
+          <Pray4MeLogo size={28} showBg={false} />
           <h1>Dua' 4 Me</h1>
-          <p className="subtitle">{greeting}, {firstName} — As-salamu alaykum</p>
-          <p className="bismillah-watermark">بِسْمِ ٱللَّهِ</p>
         </div>
       </div>
       <div className="header-accent" />

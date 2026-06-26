@@ -8,8 +8,6 @@ import MakeDuaPage from './pages/MakeDuaPage';
 import ProfilePage from './pages/ProfilePage';
 import CollectPage from './pages/CollectPage';
 import Pray4MeLogo from './components/Pray4MeLogo';
-import StarfieldBackground from './components/StarfieldBackground';
-import MosqueSilhouette from './components/MosqueSilhouette';
 
 function parseHash() {
   const hash = window.location.hash;
@@ -44,18 +42,14 @@ function App() {
       <div style={{
         minHeight: '100vh', display: 'flex', flexDirection: 'column',
         alignItems: 'center', justifyContent: 'center',
-        background: 'linear-gradient(150deg, #061a08, var(--green-dark), var(--green-primary))',
+        background: 'linear-gradient(150deg, var(--green-dark), var(--green-primary))',
         color: 'white',
-        position: 'relative', overflow: 'hidden',
       }}>
-        <StarfieldBackground starCount={50} />
-        <MosqueSilhouette color="rgba(200,169,81,0.06)" />
-        <div className="float" style={{ marginBottom: 18, position: 'relative', zIndex: 1 }}>
-          <Pray4MeLogo size={80} />
+        <div style={{ marginBottom: 14 }}>
+          <Pray4MeLogo size={56} />
         </div>
-        <div style={{ fontFamily: 'var(--font-serif)', fontSize: '2rem', fontWeight: 700, marginBottom: 8, position: 'relative', zIndex: 1 }}>Dua' 4 Me</div>
-        <div style={{ opacity: 0.6, fontSize: '0.86rem', position: 'relative', zIndex: 1 }}>Loading...</div>
-        <div style={{ fontFamily: 'var(--font-arabic)', fontSize: '1.2rem', opacity: 0.3, marginTop: 16, position: 'relative', zIndex: 1 }}>بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ</div>
+        <div style={{ fontFamily: 'var(--font-serif)', fontSize: '1.4rem', fontWeight: 700, marginBottom: 6 }}>Dua' 4 Me</div>
+        <div style={{ opacity: 0.6, fontSize: '0.82rem' }}>Loading...</div>
       </div>
     );
   }
